@@ -106,7 +106,7 @@ void main()
 	init_hardware();
 	
     // Loop endlessley generating a sine wave 
-   while(1)
+    while(1)
     {
  		// Calculate next sample
  		sample = sinegen();

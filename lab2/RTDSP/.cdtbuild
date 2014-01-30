@@ -24,9 +24,15 @@
 <option id="com.ti.ccstudio.buildDefinitions.C6000_6.1.compilerID.SILICON_VERSION.476753418" superClass="com.ti.ccstudio.buildDefinitions.C6000_6.1.compilerID.SILICON_VERSION" value="6700" valueType="string"/>
 <option id="com.ti.ccstudio.buildDefinitions.C6000_6.1.compilerID.INCLUDE_PATH.1583446158" superClass="com.ti.ccstudio.buildDefinitions.C6000_6.1.compilerID.INCLUDE_PATH" valueType="includePath">
 <listOptionValue builtIn="false" value="&quot;${CG_TOOL_ROOT}/include&quot;"/>
+<listOptionValue builtIn="false" value="&quot;${CCS_INSTALL_ROOT}\C6000\dsk6713\include&quot;"/>
+<listOptionValue builtIn="false" value="&quot;${CCS_INSTALL_ROOT}\C6000\csl\include&quot;"/>
 <listOptionValue builtIn="false" value="&quot;${PROJECT_BUILD_DIR}&quot;"/>
 <listOptionValue builtIn="false" value="&quot;${BIOS_INCLUDE_DIR}&quot;"/>
 <listOptionValue builtIn="false" value="&quot;${RTDX_INCLUDE_DIR}&quot;"/>
+</option>
+<option id="com.ti.ccstudio.buildDefinitions.C6000_6.1.compilerID.DEFINE.846288219" superClass="com.ti.ccstudio.buildDefinitions.C6000_6.1.compilerID.DEFINE" valueType="definedSymbols">
+<listOptionValue builtIn="false" value="&quot;_DEBUG&quot;"/>
+<listOptionValue builtIn="false" value="&quot;CHIP_6713&quot;"/>
 </option>
 </tool>
 <tool id="com.ti.ccstudio.buildDefinitions.C6000_6.1.exe.linkerDebug.938535579" name="C6000 Linker" superClass="com.ti.ccstudio.buildDefinitions.C6000_6.1.exe.linkerDebug">
@@ -34,6 +40,8 @@
 <option id="com.ti.ccstudio.buildDefinitions.C6000_6.1.linkerID.MAP_FILE.1051875503" superClass="com.ti.ccstudio.buildDefinitions.C6000_6.1.linkerID.MAP_FILE" value="&quot;RTDSP.map&quot;" valueType="string"/>
 <option id="com.ti.ccstudio.buildDefinitions.C6000_6.1.linkerID.LIBRARY.752631031" superClass="com.ti.ccstudio.buildDefinitions.C6000_6.1.linkerID.LIBRARY" valueType="libs">
 <listOptionValue builtIn="false" value="&quot;rts6700.lib&quot;"/>
+<listOptionValue builtIn="false" value="&quot;${CCS_INSTALL_ROOT}\C6000\csl\lib\csl6713.lib&quot;"/>
+<listOptionValue builtIn="false" value="&quot;${CCS_INSTALL_ROOT}\C6000\dsk6713\lib\dsk6713bslccsv4.lib&quot;"/>
 </option>
 <option id="com.ti.ccstudio.buildDefinitions.C6000_6.1.linkerID.SEARCH_PATH.41494429" superClass="com.ti.ccstudio.buildDefinitions.C6000_6.1.linkerID.SEARCH_PATH" valueType="stringList">
 <listOptionValue builtIn="false" value="&quot;${CG_TOOL_ROOT}/lib&quot;"/>
@@ -41,9 +49,12 @@
 <listOptionValue builtIn="false" value="&quot;${RTDX_LIB_DIR}&quot;"/>
 <listOptionValue builtIn="false" value="&quot;${BIOS_LIB_DIR}&quot;"/>
 </option>
+<option id="com.ti.ccstudio.buildDefinitions.C6000_6.1.linkerID.generatedLinkerCommandFiles.1983506921" superClass="com.ti.ccstudio.buildDefinitions.C6000_6.1.linkerID.generatedLinkerCommandFiles" valueType="libs">
+<listOptionValue builtIn="false" value="&quot;$(GEN_CMDS_QUOTED)&quot;"/>
+</option>
 </tool>
 <tool id="com.ti.rtsc.buildDefinitions.DSPBIOS_5.40.tool.1128801595" name="TConf Script Compiler" superClass="com.ti.rtsc.buildDefinitions.DSPBIOS_5.40.tool"/>
-<macros/>
+<macros expandEnvironmentMacros="true"/>
 </toolChain>
 </configuration>
 <configuration artifactExtension="out" artifactName="RTDSP" description="" id="com.ti.ccstudio.buildDefinitions.C6000.Release.726017348" name="Release" parent="com.ti.ccstudio.buildDefinitions.C6000.Release">
