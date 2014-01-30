@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?fileVersion 3.1.0?>
+
+<ManagedProjectBuildInfo>
+<project id="RTDSP.com.ti.ccstudio.buildDefinitions.C6000.ProjectType.459395394" name="C6000" projectType="com.ti.ccstudio.buildDefinitions.C6000.ProjectType">
+<configuration artifactExtension="out" artifactName="RTDSP" description="" id="com.ti.ccstudio.buildDefinitions.C6000.Debug.1506074746" name="Debug" parent="com.ti.ccstudio.buildDefinitions.C6000.Debug">
+<toolChain id="com.ti.ccstudio.buildDefinitions.C6000_6.1.exe.DebugToolchain.1044501365" name="TI Code Generation Tools" superClass="com.ti.ccstudio.buildDefinitions.C6000_6.1.exe.DebugToolchain" targetTool="com.ti.ccstudio.buildDefinitions.C6000_6.1.exe.linkerDebug.2051373641">
+<option id="com.ti.ccstudio.buildDefinitions.core.OPT_CODEGEN_VERSION.1741657093" superClass="com.ti.ccstudio.buildDefinitions.core.OPT_CODEGEN_VERSION" value="6.1.15" valueType="string"/>
+<option id="com.ti.ccstudio.buildDefinitions.core.OPT_TAGS.1838742593" superClass="com.ti.ccstudio.buildDefinitions.core.OPT_TAGS" valueType="stringList">
+<listOptionValue builtIn="false" value="DEVICE_CONFIGURATION_ID=com.ti.ccstudio.deviceModel.C6000.GenericC67xxDevice"/>
+<listOptionValue builtIn="false" value="DEVICE_ENDIANNESS=little"/>
+<listOptionValue builtIn="false" value="IS_ELF=false"/>
+<listOptionValue builtIn="false" value="LINKER_COMMAND_FILE=volume.cmd"/>
+<listOptionValue builtIn="false" value="RUNTIME_SUPPORT_LIBRARY=rts6700.lib"/>
+<listOptionValue builtIn="false" value="IS_ASSEMBLY_ONLY=false"/>
+<listOptionValue builtIn="false" value="CCS_MBS_VERSION=4.1.3"/>
+<listOptionValue builtIn="false" value="PROJECT_KIND=com.ti.ccstudio.managedbuild.core.ProjectKind_Executable"/>
+</option>
+<tool id="com.ti.ccstudio.buildDefinitions.C6000_6.1.exe.compilerDebug.2002694856" name="C6000 Compiler" superClass="com.ti.ccstudio.buildDefinitions.C6000_6.1.exe.compilerDebug">
+<option id="com.ti.ccstudio.buildDefinitions.C6000_6.1.compilerID.DIAG_WARNING.1652751432" superClass="com.ti.ccstudio.buildDefinitions.C6000_6.1.compilerID.DIAG_WARNING" valueType="stringList">
+<listOptionValue builtIn="false" value="225"/>
+</option>
+<option id="com.ti.ccstudio.buildDefinitions.C6000_6.1.compilerID.SILICON_VERSION.1898434864" superClass="com.ti.ccstudio.buildDefinitions.C6000_6.1.compilerID.SILICON_VERSION" value="6700" valueType="string"/>
+<option id="com.ti.ccstudio.buildDefinitions.C6000_6.1.compilerID.INCLUDE_PATH.884884771" superClass="com.ti.ccstudio.buildDefinitions.C6000_6.1.compilerID.INCLUDE_PATH" valueType="includePath">
+<listOptionValue builtIn="false" value="&quot;${CG_TOOL_ROOT}/include&quot;"/>
+</option>
+<option id="com.ti.ccstudio.buildDefinitions.C6000_6.1.compilerID.DEFINE.1116673337" superClass="com.ti.ccstudio.buildDefinitions.C6000_6.1.compilerID.DEFINE" valueType="definedSymbols">
+<listOptionValue builtIn="false" value="FILEIO"/>
+</option>
+</tool>
+<tool id="com.ti.ccstudio.buildDefinitions.C6000_6.1.exe.linkerDebug.2051373641" name="C6000 Linker" superClass="com.ti.ccstudio.buildDefinitions.C6000_6.1.exe.linkerDebug">
+<option id="com.ti.ccstudio.buildDefinitions.C6000_6.1.linkerID.OUTPUT_FILE.130781559" superClass="com.ti.ccstudio.buildDefinitions.C6000_6.1.linkerID.OUTPUT_FILE" value="&quot;RTDSP.out&quot;" valueType="string"/>
+<option id="com.ti.ccstudio.buildDefinitions.C6000_6.1.linkerID.MAP_FILE.740436676" superClass="com.ti.ccstudio.buildDefinitions.C6000_6.1.linkerID.MAP_FILE" value="&quot;RTDSP.map&quot;" valueType="string"/>
+<option id="com.ti.ccstudio.buildDefinitions.C6000_6.1.linkerID.SEARCH_PATH.1287790165" superClass="com.ti.ccstudio.buildDefinitions.C6000_6.1.linkerID.SEARCH_PATH" valueType="stringList">
+<listOptionValue builtIn="false" value="&quot;${CG_TOOL_ROOT}/lib&quot;"/>
+<listOptionValue builtIn="false" value="&quot;${CG_TOOL_ROOT}/include&quot;"/>
+</option>
+<option id="com.ti.ccstudio.buildDefinitions.C6000_6.1.linkerID.LIBRARY.267757897" superClass="com.ti.ccstudio.buildDefinitions.C6000_6.1.linkerID.LIBRARY" valueType="libs">
+<listOptionValue builtIn="false" value="&quot;rts6700.lib&quot;"/>
+</option>
+<option id="com.ti.ccstudio.buildDefinitions.C6000_6.1.linkerID.STACK_SIZE.1316963177" superClass="com.ti.ccstudio.buildDefinitions.C6000_6.1.linkerID.STACK_SIZE" value="0x400" valueType="string"/>
+<option id="com.ti.ccstudio.buildDefinitions.C6000_6.1.linkerID.HEAP_SIZE.810900413" superClass="com.ti.ccstudio.buildDefinitions.C6000_6.1.linkerID.HEAP_SIZE" value="0x400" valueType="string"/>
+<option id="com.ti.ccstudio.buildDefinitions.C6000_6.1.linkerID.generatedLinkerCommandFiles.1083606877" superClass="com.ti.ccstudio.buildDefinitions.C6000_6.1.linkerID.generatedLinkerCommandFiles" valueType="libs">
+<listOptionValue builtIn="false" value="&quot;$(GEN_CMDS_QUOTED)&quot;"/>
+</option>
+</tool>
+<macros expandEnvironmentMacros="true"/>
+</toolChain>
+</configuration>
+<configuration artifactExtension="out" artifactName="RTDSP" description="" id="com.ti.ccstudio.buildDefinitions.C6000.Release.1481243851" name="Release" parent="com.ti.ccstudio.buildDefinitions.C6000.Release">
+<toolChain id="com.ti.ccstudio.buildDefinitions.C6000_6.1.exe.ReleaseToolchain.771258458" name="TI Code Generation Tools" superClass="com.ti.ccstudio.buildDefinitions.C6000_6.1.exe.ReleaseToolchain" targetTool="com.ti.ccstudio.buildDefinitions.C6000_6.1.exe.linkerRelease.2053300625">
+<option id="com.ti.ccstudio.buildDefinitions.core.OPT_CODEGEN_VERSION.1977714015" superClass="com.ti.ccstudio.buildDefinitions.core.OPT_CODEGEN_VERSION" value="6.1.15" valueType="string"/>
+<option id="com.ti.ccstudio.buildDefinitions.core.OPT_TAGS.1179421725" superClass="com.ti.ccstudio.buildDefinitions.core.OPT_TAGS" valueType="stringList">
+<listOptionValue builtIn="false" value="DEVICE_CONFIGURATION_ID=com.ti.ccstudio.deviceModel.C6000.GenericC67xxDevice"/>
+<listOptionValue builtIn="false" value="DEVICE_ENDIANNESS=little"/>
+<listOptionValue builtIn="false" value="IS_ELF=false"/>
+<listOptionValue builtIn="false" value="LINKER_COMMAND_FILE="/>
+<listOptionValue builtIn="false" value="RUNTIME_SUPPORT_LIBRARY=rts6700.lib"/>
+<listOptionValue builtIn="false" value="IS_ASSEMBLY_ONLY=false"/>
+<listOptionValue builtIn="false" value="CCS_MBS_VERSION=4.1.3"/>
+<listOptionValue builtIn="false" value="PROJECT_KIND=com.ti.ccstudio.managedbuild.core.ProjectKind_Executable"/>
+</option>
+<tool id="com.ti.ccstudio.buildDefinitions.C6000_6.1.exe.compilerRelease.794022912" name="C6000 Compiler" superClass="com.ti.ccstudio.buildDefinitions.C6000_6.1.exe.compilerRelease">
+<option id="com.ti.ccstudio.buildDefinitions.C6000_6.1.compilerID.DIAG_WARNING.746283082" superClass="com.ti.ccstudio.buildDefinitions.C6000_6.1.compilerID.DIAG_WARNING" valueType="stringList">
+<listOptionValue builtIn="false" value="225"/>
+</option>
+<option id="com.ti.ccstudio.buildDefinitions.C6000_6.1.compilerID.SILICON_VERSION.24175463" superClass="com.ti.ccstudio.buildDefinitions.C6000_6.1.compilerID.SILICON_VERSION" value="6700" valueType="string"/>
+<option id="com.ti.ccstudio.buildDefinitions.C6000_6.1.compilerID.INCLUDE_PATH.1557437402" superClass="com.ti.ccstudio.buildDefinitions.C6000_6.1.compilerID.INCLUDE_PATH" valueType="includePath">
+<listOptionValue builtIn="false" value="&quot;${CG_TOOL_ROOT}/include&quot;"/>
+</option>
+</tool>
+<tool id="com.ti.ccstudio.buildDefinitions.C6000_6.1.exe.linkerRelease.2053300625" name="C6000 Linker" superClass="com.ti.ccstudio.buildDefinitions.C6000_6.1.exe.linkerRelease">
+<option id="com.ti.ccstudio.buildDefinitions.C6000_6.1.linkerID.OUTPUT_FILE.2088024060" superClass="com.ti.ccstudio.buildDefinitions.C6000_6.1.linkerID.OUTPUT_FILE" value="&quot;RTDSP.out&quot;" valueType="string"/>
+<option id="com.ti.ccstudio.buildDefinitions.C6000_6.1.linkerID.MAP_FILE.2060225486" superClass="com.ti.ccstudio.buildDefinitions.C6000_6.1.linkerID.MAP_FILE" value="&quot;RTDSP.map&quot;" valueType="string"/>
+<option id="com.ti.ccstudio.buildDefinitions.C6000_6.1.linkerID.LIBRARY.1561015664" superClass="com.ti.ccstudio.buildDefinitions.C6000_6.1.linkerID.LIBRARY" valueType="libs">
+<listOptionValue builtIn="false" value="&quot;rts6700.lib&quot;"/>
+</option>
+<option id="com.ti.ccstudio.buildDefinitions.C6000_6.1.linkerID.SEARCH_PATH.1664772637" superClass="com.ti.ccstudio.buildDefinitions.C6000_6.1.linkerID.SEARCH_PATH" valueType="stringList">
+<listOptionValue builtIn="false" value="&quot;${CG_TOOL_ROOT}/lib&quot;"/>
+<listOptionValue builtIn="false" value="&quot;${CG_TOOL_ROOT}/include&quot;"/>
+</option>
+</tool>
+</toolChain>
+<resourceConfiguration exclude="true" id="com.ti.ccstudio.buildDefinitions.C6000.Release.1481243851./RTDSP/volume.cmd" name="volume.cmd" rcbsApplicability="disable" resourcePath="/RTDSP/volume.cmd" toolsToInvoke="com.ti.ccstudio.buildDefinitions.C6000_6.1.exe.linkerRelease.2053300625./RTDSP/volume.cmd">
+<tool id="com.ti.ccstudio.buildDefinitions.C6000_6.1.exe.linkerRelease.2053300625./RTDSP/volume.cmd" name="C6000 Linker" superClass="com.ti.ccstudio.buildDefinitions.C6000_6.1.exe.linkerRelease.2053300625"/>
+</resourceConfiguration>
+</configuration>
+</project>
+</ManagedProjectBuildInfo>
