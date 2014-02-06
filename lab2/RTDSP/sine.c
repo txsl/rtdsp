@@ -41,6 +41,7 @@
 
 // PI defined here for use in your code 
 #define PI 3.141592653589793
+#define SINE_TABLE_SIZE 256
 
 
 
@@ -73,6 +74,7 @@ DSK6713_AIC23_CodecHandle H_Codec;
 32000, 44100 (CD standard), 48000 or 96000  */ 
 int sampling_freq = 8000;
 
+float table [SINE_TABLE_SIZE];
 
 // Array of data used by sinegen to generate sine. These are the initial values.                        
 float y[3] = {0,0,0};
@@ -82,7 +84,7 @@ float a0 = 1.4142; // coefficients for difference equation
 float b0 = 0.707;
 
 // Holds the value of the current sample 
-float sample; 
+float sample;
 
 /* Left and right audio channel gain values, calculated to be less than signed 32 bit
  maximum value. */
@@ -92,11 +94,14 @@ Int32 R_Gain = 2100000000;
 
 /* Use this variable in your code to set the frequency of your sine wave 
    be carefull that you do not set it above the current nyquist frequency! */
-float sine_freq = 1000.0;         
+float sine_freq = 1000.0;
+
+float index = 0.0;         
 
      
 /******************************* Function prototypes ********************************/
-void init_hardware(void);     
+void init_hardware(void);  
+void sine_init(void);   
 float sinegen(void);
 /********************************** Main routine ************************************/
 void main()
@@ -104,6 +109,9 @@ void main()
 
 	// initialize board and the audio port
 	init_hardware();
+	
+	// initialize the sine table
+	sine_init();
 	
     // Loop endlessley generating a sine wave 
     while(1)
@@ -149,13 +157,28 @@ void init_hardware()
 
 }
 
+/********************************* sine_init() ***************************************/   
+
+void sine_init(void)
+{
+/*	
+ * 
+ */
+ 	int i;
+	for (i = 0; i < SINE_TABLE_SIZE; i++)
+	{
+		table[i] = sin(2*PI*i / SINE_TABLE_SIZE);
+	}
+}
+
+
 /********************************** sinegen() ***************************************/   
 float sinegen(void)
 {
 /*  This code produces a fixed sine of 1KHZ (if the sampling frequency is 8KHZ)
     using a digital filter.
  	You will need to re-write this function to produce a sine of variable frequency
- 	using a look up table instead of a filter.*/
+ 	using a look up table instead of a filter.
 	
 	// temporary variable used to output values from function
 	float wave;	
@@ -173,8 +196,16 @@ float sinegen(void)
 
 	wave = y[0];
 			   
-    return(wave); 
+    return(wave); */
     
+    index += (SINE_TABLE_SIZE)/(sampling_freq/sine_freq);
+    
+    if (index > SINE_TABLE_SIZE)
+    {
+    	index -= SINE_TABLE_SIZE;
+    }
+    
+    return table[(int)index];
 }
 
 

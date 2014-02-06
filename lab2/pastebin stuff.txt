@@ -1,0 +1,4 @@
+So like, lets have a look at our table variable
+which should look like a nice sin wave
+
+http://pastebin.com/BCjv7jb6
