@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<workbench progressCount="66" version="2.0">
+<workbench progressCount="70" version="2.0">
 <workbenchAdvisor/>
 <window height="768" maximized="true" width="1024" x="267" y="-16">
 <fastViewData fastViewLocation="1024">
@@ -40,12 +40,12 @@
 </folder>
 </info>
 </editorArea>
-<editor focus="true" id="org.eclipse.cdt.ui.editor.CEditor" name="sine.c" partName="sine.c" path="L:/RTDSPlab/lab2/RTDSP/sine.c" title="sine.c" tooltip="RTDSP/sine.c" workbook="DefaultEditorWorkbook">
+<editor id="org.eclipse.cdt.ui.editor.CEditor" name="sine.c" partName="sine.c" path="L:/RTDSPlab/lab2/RTDSP/sine.c" title="sine.c" tooltip="RTDSP/sine.c" workbook="DefaultEditorWorkbook">
 <input factoryID="org.eclipse.ui.part.FileEditorInputFactory" path="/RTDSP/sine.c"/>
 </editor>
 </editors>
 <views>
-<view id="com.ti.dvt.ui.views.line:SingleTime~5" partName="Single Time -6">
+<view id="com.ti.dvt.ui.views.line:SingleTime~5" partName="Line Graph">
 <viewState>
 <pane IMemento.internal.id="com.ti.dvt.ui.views.line:SingleTime~5"/>
 </viewState>
@@ -60,7 +60,6 @@
 <expanded>
 <element path="L:\RTDSPlab\lab2\RTDSP"/>
 </expanded>
-<selection/>
 <customFilters userDefinedPatternsEnabled="false">
 <xmlDefinedFilters>
 <child filterId="org.eclipse.cdt.internal.ui.CView.ArchiveFilter" isEnabled="false"/>
@@ -78,12 +77,12 @@
 <view id="org.eclipse.debug.ui.DebugView" partName="Debug">
 <viewState/>
 </view>
-<view id="com.ti.dvt.ui.views.line:SingleTime" partName="Single Time -3">
+<view id="com.ti.dvt.ui.views.line:SingleTime" partName="Line Graph">
 <viewState>
 <pane IMemento.internal.id="com.ti.dvt.ui.views.line:SingleTime"/>
 </viewState>
 </view>
-<view id="com.ti.ccstudio.memory.ui.view.TIMemoryView" partName="Memory (2)">
+<view id="com.ti.ccstudio.memory.ui.view.TIMemoryView" partName="Memory (1)">
 <viewState/>
 </view>
 <view id="com.ti.ccstudio.debug.registers.ui.Variables" partName="Local (1)">
@@ -92,12 +91,12 @@
 <view id="com.ti.ccstudio.debug.registers.ui.Expressions" partName="Watch (1)">
 <viewState StatesFile="L:/RTDSPlab/lab2/.metadata/.plugins/com.ti.ccstudio.debug.registers.ui/expressions.xml" columnName.0="Name" columnName.1="Value" columnName.2="Address" columnName.3="Type" columnName.4="Format" columnWidth.0="150" columnWidth.1="150" columnWidth.2="150" columnWidth.3="150" columnWidth.4="80" numberOfVisibleColumns="5"/>
 </view>
-<view id="com.ti.dvt.ui.views.line:SingleTime~7" partName="Single Time -8">
+<view id="com.ti.dvt.ui.views.line:SingleTime~7" partName="Line Graph">
 <viewState>
 <pane IMemento.internal.id="com.ti.dvt.ui.views.line:SingleTime~7"/>
 </viewState>
 </view>
-<view id="com.ti.dvt.ui.views.line:SingleTime~3" partName="Single Time -4">
+<view id="com.ti.dvt.ui.views.line:SingleTime~3" partName="Line Graph">
 <viewState>
 <pane IMemento.internal.id="com.ti.dvt.ui.views.line:SingleTime~3"/>
 </viewState>
@@ -108,14 +107,19 @@
 <view id="org.eclipse.ui.console.ConsoleView" partName="Console">
 <viewState/>
 </view>
-<view id="com.ti.ccstudio.system.setup.ui.views.TargetConfigurationView" partName="Target Configurations"/>
-<view id="com.ti.dvt.ui.views.line:SingleTime~4" partName="Single Time -5">
+<view id="com.ti.ccstudio.system.setup.ui.views.TargetConfigurationView" partName="Target Configurations">
+<viewState/>
+</view>
+<view id="com.ti.dvt.ui.views.line:SingleTime~4" partName="Line Graph">
 <viewState>
 <pane IMemento.internal.id="com.ti.dvt.ui.views.line:SingleTime~4"/>
 </viewState>
 </view>
+<view id="com.ti.ccstudio.debug.ui.TIDisassemblyView" partName="Disassembly (_mpyll + 0x5c)">
+<viewState/>
+</view>
 <view id="org.eclipse.ui.views.ProblemView" partName="Problems">
-<viewState columnWidth0="253" columnWidth1="78" columnWidth2="153" columnWidth3="63" columnWidth4="0" horizontalPosition="0" verticalPosition="0">
+<viewState columnWidth0="259" columnWidth1="84" columnWidth2="159" columnWidth3="69" columnWidth4="0" horizontalPosition="0" verticalPosition="0">
 <columnOrder columnOrderIndex="0"/>
 <columnOrder columnOrderIndex="1"/>
 <columnOrder columnOrderIndex="2"/>
@@ -123,11 +127,8 @@
 <columnOrder columnOrderIndex="4"/>
 </viewState>
 </view>
-<view id="com.ti.ccstudio.debug.ui.TIDisassemblyView" partName="Disassembly (_frcmpyf_div + 0x90)">
-<viewState/>
-</view>
 </views>
-<perspectives activePart="org.eclipse.debug.ui.DebugView" activePerspective="org.eclipse.debug.ui.DebugPerspective">
+<perspectives activePart="com.ti.ccstudio.debug.ui.TIDisassemblyView" activePerspective="org.eclipse.debug.ui.DebugPerspective">
 <perspective editorAreaVisible="1" fixed="0" version="0.016">
 <descriptor class="org.eclipse.cdt.internal.ui.CPerspectiveFactory" id="org.eclipse.cdt.ui.CPerspective" label="C/C++"/>
 <alwaysOnActionSet id="com.ti.ccstudio.debug.ui.licensing"/>
@@ -190,50 +191,33 @@
 <view id="org.eclipse.ui.console.ConsoleView"/>
 <view id="org.eclipse.ui.views.ProblemView"/>
 <view id="org.eclipse.ui.cheatsheets.views.CheatSheetView"/>
-<layout>
-<mainWindow>
-<info part="org.eclipse.rtsc.xdctools.model.ui.views.packageView"/>
-<info folder="true" part="org.eclipse.ui.internal.ViewStack@fa706d" ratio="0.749499" ratioLeft="748" ratioRight="250" relationship="2" relative="org.eclipse.rtsc.xdctools.model.ui.views.packageView">
-<folder activePageID="org.eclipse.ui.cheatsheets.views.CheatSheetView" appearance="2" expanded="2">
-<page content="org.eclipse.help.ui.HelpView" label="LabelNotFound"/>
+<layout>&#x0A;<mainWindow>&#x0A;<info part="org.eclipse.rtsc.xdctools.model.ui.views.packageView"/>
+<info folder="true" part="org.eclipse.ui.internal.ViewStack@fa706d" ratio="0.749499" ratioLeft="748" ratioRight="250" relationship="2" relative="org.eclipse.rtsc.xdctools.model.ui.views.packageView">&#x0A;<folder activePageID="org.eclipse.ui.cheatsheets.views.CheatSheetView" appearance="2" expanded="2">&#x0A;<page content="org.eclipse.help.ui.HelpView" label="LabelNotFound"/>
 <page content="org.eclipse.ui.internal.introview" label="LabelNotFound"/>
 <page content="org.eclipse.ui.cheatsheets.views.CheatSheetView" label="Cheat Sheets"/>
-<presentation id="org.eclipse.ui.presentations.WorkbenchPresentationFactory">
-<part id="0"/>
+<presentation id="org.eclipse.ui.presentations.WorkbenchPresentationFactory">&#x0A;<part id="0"/>
 </presentation>
 </folder>
 </info>
-<info folder="true" part="org.eclipse.ui.internal.ViewStack@13478c8" ratio="0.249499" ratioLeft="249" ratioRight="749" relationship="2" relative="org.eclipse.rtsc.xdctools.model.ui.views.packageView">
-<folder activePageID="org.eclipse.cdt.ui.CView" appearance="2" expanded="2">
-<page content="org.eclipse.cdt.ui.CView" label="C/C++ Projects"/>
-<presentation id="org.eclipse.ui.presentations.WorkbenchPresentationFactory">
-<part id="0"/>
+<info folder="true" part="org.eclipse.ui.internal.ViewStack@13478c8" ratio="0.249499" ratioLeft="249" ratioRight="749" relationship="2" relative="org.eclipse.rtsc.xdctools.model.ui.views.packageView">&#x0A;<folder activePageID="org.eclipse.cdt.ui.CView" appearance="2" expanded="2">&#x0A;<page content="org.eclipse.cdt.ui.CView" label="C/C++ Projects"/>
+<presentation id="org.eclipse.ui.presentations.WorkbenchPresentationFactory">&#x0A;<part id="0"/>
 </presentation>
 </folder>
 </info>
-<info folder="true" part="topRight" ratio="0.74899864" ratioLeft="561" ratioRight="188" relationship="2" relative="org.eclipse.ui.internal.ViewStack@13478c8">
-<folder activePageID="org.eclipse.ui.views.ContentOutline" appearance="2" expanded="2">
-<page content="org.eclipse.ui.views.ContentOutline" label="Outline"/>
-<presentation id="org.eclipse.ui.presentations.WorkbenchPresentationFactory">
-<part id="0"/>
+<info folder="true" part="topRight" ratio="0.74899864" ratioLeft="561" ratioRight="188" relationship="2" relative="org.eclipse.ui.internal.ViewStack@13478c8">&#x0A;<folder activePageID="org.eclipse.ui.views.ContentOutline" appearance="2" expanded="2">&#x0A;<page content="org.eclipse.ui.views.ContentOutline" label="Outline"/>
+<presentation id="org.eclipse.ui.presentations.WorkbenchPresentationFactory">&#x0A;<part id="0"/>
 </presentation>
 </folder>
 </info>
 <info part="org.eclipse.ui.views.BookmarkView" ratio="0.5" ratioLeft="94" ratioRight="94" relationship="2" relative="topRight"/>
 <info part="com.ti.ccstudio.system.setup.ui.views.TargetConfigurationView" ratio="0.5" ratioLeft="94" ratioRight="94" relationship="2" relative="topRight"/>
-<info folder="true" part="org.eclipse.ui.internal.ViewStack@140eacd" ratio="0.6997167" ratioLeft="494" ratioRight="212" relationship="4" relative="org.eclipse.ui.internal.ViewStack@13478c8">
-<folder activePageID="org.eclipse.ui.console.ConsoleView" appearance="2" expanded="2">
-<page content="org.eclipse.ui.console.ConsoleView" label="Console"/>
-<presentation id="org.eclipse.ui.presentations.WorkbenchPresentationFactory">
-<part id="0"/>
+<info folder="true" part="org.eclipse.ui.internal.ViewStack@140eacd" ratio="0.6997167" ratioLeft="494" ratioRight="212" relationship="4" relative="org.eclipse.ui.internal.ViewStack@13478c8">&#x0A;<folder activePageID="org.eclipse.ui.console.ConsoleView" appearance="2" expanded="2">&#x0A;<page content="org.eclipse.ui.console.ConsoleView" label="Console"/>
+<presentation id="org.eclipse.ui.presentations.WorkbenchPresentationFactory">&#x0A;<part id="0"/>
 </presentation>
 </folder>
 </info>
-<info folder="true" part="org.eclipse.ui.internal.ViewStack@1a601b0" ratio="0.49910873" ratioLeft="280" ratioRight="281" relationship="2" relative="org.eclipse.ui.internal.ViewStack@140eacd">
-<folder activePageID="org.eclipse.ui.views.ProblemView" appearance="2" expanded="2">
-<page content="org.eclipse.ui.views.ProblemView" label="Problems"/>
-<presentation id="org.eclipse.ui.presentations.WorkbenchPresentationFactory">
-<part id="0"/>
+<info folder="true" part="org.eclipse.ui.internal.ViewStack@1a601b0" ratio="0.49910873" ratioLeft="280" ratioRight="281" relationship="2" relative="org.eclipse.ui.internal.ViewStack@140eacd">&#x0A;<folder activePageID="org.eclipse.ui.views.ProblemView" appearance="2" expanded="2">&#x0A;<page content="org.eclipse.ui.views.ProblemView" label="Problems"/>
+<presentation id="org.eclipse.ui.presentations.WorkbenchPresentationFactory">&#x0A;<part id="0"/>
 </presentation>
 </folder>
 </info>
@@ -335,7 +319,7 @@
 </presentation>
 </folder>
 </info>
-<info folder="true" part="org.eclipse.ui.internal.ViewStack@10a02cf" ratio="0.7497382" ratioLeft="1432" ratioRight="478" relationship="2" relative="org.eclipse.debug.internal.ui.NavigatorFolderView">
+<info folder="true" part="org.eclipse.ui.internal.ViewStack@10a02cf" ratio="0.7761457" ratioLeft="1321" ratioRight="381" relationship="2" relative="org.eclipse.debug.internal.ui.NavigatorFolderView">
 <folder activePageID="org.eclipse.ui.views.ProblemView" appearance="2" expanded="2">
 <page content="org.eclipse.help.ui.HelpView" label="LabelNotFound"/>
 <page content="org.eclipse.ui.internal.introview" label="LabelNotFound"/>
@@ -347,8 +331,8 @@
 </presentation>
 </folder>
 </info>
-<info folder="true" part="org.eclipse.ui.internal.ViewStack@200930" ratio="0.73723406" ratioLeft="693" ratioRight="247" relationship="4" relative="org.eclipse.debug.internal.ui.NavigatorFolderView">
-<folder activePageID="com.ti.dvt.ui.views.line:SingleTime~7" appearance="2" expanded="2">
+<info folder="true" part="org.eclipse.ui.internal.ViewStack@200930" ratio="0.87659574" ratioLeft="824" ratioRight="116" relationship="4" relative="org.eclipse.debug.internal.ui.NavigatorFolderView">
+<folder activePageID="org.eclipse.ui.console.ConsoleView" appearance="2" expanded="2">
 <page content="org.eclipse.ui.console.ConsoleView" label="Console"/>
 <page content="org.eclipse.ui.views.BookmarkView" label="LabelNotFound"/>
 <page content="org.eclipse.ui.views.PropertySheet" label="LabelNotFound"/>
@@ -357,11 +341,11 @@
 <page content="com.ti.dvt.ui.views.line:Real*" label="LabelNotFound"/>
 <page content="com.ti.dvt.ui.views.line:Magnitude*" label="LabelNotFound"/>
 <page content="com.ti.dvt.ui.views.line:MagnitudeOnly*" label="LabelNotFound"/>
-<page content="com.ti.dvt.ui.views.line:SingleTime" label="Single Time -3"/>
-<page content="com.ti.dvt.ui.views.line:SingleTime~3" label="Single Time -4"/>
-<page content="com.ti.dvt.ui.views.line:SingleTime~4" label="Single Time -5"/>
-<page content="com.ti.dvt.ui.views.line:SingleTime~5" label="Single Time -6"/>
-<page content="com.ti.dvt.ui.views.line:SingleTime~7" label="Single Time -8"/>
+<page content="com.ti.dvt.ui.views.line:SingleTime" label="Line Graph"/>
+<page content="com.ti.dvt.ui.views.line:SingleTime~3" label="Line Graph"/>
+<page content="com.ti.dvt.ui.views.line:SingleTime~4" label="Line Graph"/>
+<page content="com.ti.dvt.ui.views.line:SingleTime~5" label="Line Graph"/>
+<page content="com.ti.dvt.ui.views.line:SingleTime~7" label="Line Graph"/>
 <presentation id="org.eclipse.ui.presentations.WorkbenchPresentationFactory">
 <part id="0"/>
 <part id="1"/>
@@ -373,10 +357,10 @@
 </folder>
 </info>
 <info part="org.eclipse.ui.editorss" ratio="0.27969348" ratioLeft="219" ratioRight="564" relationship="4" relative="org.eclipse.debug.internal.ui.NavigatorFolderView"/>
-<info folder="true" part="org.eclipse.ui.internal.ViewStack@1cf2e78" ratio="0.7497382" ratioLeft="1432" ratioRight="478" relationship="2" relative="org.eclipse.ui.editorss">
+<info folder="true" part="org.eclipse.ui.internal.ViewStack@1cf2e78" ratio="0.57966614" ratioLeft="764" ratioRight="554" relationship="2" relative="org.eclipse.ui.editorss">
 <folder activePageID="com.ti.ccstudio.debug.ui.TIDisassemblyView" appearance="2" expanded="2">
-<page content="com.ti.ccstudio.debug.ui.TIDisassemblyView" label="Disassembly (_frcmpyf_div + 0x90)"/>
-<page content="com.ti.ccstudio.memory.ui.view.TIMemoryView" label="Memory (2)"/>
+<page content="com.ti.ccstudio.debug.ui.TIDisassemblyView" label="Disassembly (_mpyll + 0x5c)"/>
+<page content="com.ti.ccstudio.memory.ui.view.TIMemoryView" label="Memory (1)"/>
 <page content="org.eclipse.ui.views.ContentOutline" label="LabelNotFound"/>
 <page content="com.ti.ccstudio.debug.ui.views.KernelObjects" label="LabelNotFound"/>
 <presentation id="org.eclipse.ui.presentations.WorkbenchPresentationFactory">
@@ -385,7 +369,7 @@
 </presentation>
 </folder>
 </info>
-<info folder="true" part="org.eclipse.debug.internal.ui.ToolsFolderView" ratio="0.5" ratioLeft="955" ratioRight="955" relationship="2" relative="org.eclipse.debug.internal.ui.NavigatorFolderView">
+<info folder="true" part="org.eclipse.debug.internal.ui.ToolsFolderView" ratio="0.57966614" ratioLeft="764" ratioRight="554" relationship="2" relative="org.eclipse.debug.internal.ui.NavigatorFolderView">
 <folder activePageID="com.ti.ccstudio.debug.registers.ui.Expressions" appearance="2" expanded="2">
 <page content="com.ti.ccstudio.debug.registers.ui.Variables" label="Local (1)"/>
 <page content="com.ti.ccstudio.debug.registers.ui.Expressions" label="Watch (1)"/>
@@ -412,83 +396,7 @@
 </perspective>
 </perspectives>
 <workingSets/>
-<navigationHistory>
-<editors>
-<editor factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="org.eclipse.cdt.ui.editor.CEditor" path="/RTDSP/sine.c"/>
-<editor factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="com.ti.ccstudio.system.setup.editor.editors.MultiPageXMLEditor" path="/RTDSP/NewTargetConfiguration.ccxml"/>
-<editor factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="org.eclipse.cdt.ui.editor.asm.AsmEditor" path="/RTDSP/Debug/dsp_bios_cfg.s62"/>
-</editors>
-<item historyLabel="sine.c" index="0">
-<position/>
-</item>
-<item historyLabel="NewTargetConfiguration.ccxml" index="1"/>
-<item historyLabel="sine.c" index="0">
-<position info="not_deleted" x="1132" y="0"/>
-</item>
-<item historyLabel="sine.c" index="0">
-<position info="not_deleted" x="4510" y="0"/>
-</item>
-<item historyLabel="sine.c" index="0">
-<position info="not_deleted" x="4964" y="0"/>
-</item>
-<item historyLabel="dsp_bios_cfg.s62" index="2">
-<position info="not_deleted" x="18873" y="0"/>
-</item>
-<item historyLabel="sine.c" index="0">
-<position info="not_deleted" x="4510" y="0"/>
-</item>
-<item historyLabel="sine.c" index="0">
-<position info="not_deleted" x="4196" y="0"/>
-</item>
-<item historyLabel="sine.c" index="0">
-<position info="not_deleted" x="6175" y="0"/>
-</item>
-<item historyLabel="sine.c" index="0">
-<position info="not_deleted" x="6319" y="0"/>
-</item>
-<item historyLabel="sine.c" index="0">
-<position info="not_deleted" x="4510" y="0"/>
-</item>
-<item historyLabel="sine.c" index="0">
-<position info="not_deleted" x="4725" y="0"/>
-</item>
-<item historyLabel="sine.c" index="0">
-<position info="not_deleted" x="7399" y="0"/>
-</item>
-<item historyLabel="sine.c" index="0">
-<position info="not_deleted" x="4510" y="0"/>
-</item>
-<item historyLabel="sine.c" index="0">
-<position info="not_deleted" x="4403" y="0"/>
-</item>
-<item historyLabel="sine.c" index="0">
-<position info="not_deleted" x="4510" y="0"/>
-</item>
-<item historyLabel="sine.c" index="0">
-<position info="not_deleted" x="4964" y="0"/>
-</item>
-<item historyLabel="sine.c" index="0">
-<position info="not_deleted" x="4510" y="0"/>
-</item>
-<item historyLabel="sine.c" index="0">
-<position info="not_deleted" x="4625" y="0"/>
-</item>
-<item historyLabel="sine.c" index="0">
-<position info="not_deleted" x="4675" y="0"/>
-</item>
-<item historyLabel="sine.c" index="0">
-<position info="not_deleted" x="552" y="0"/>
-</item>
-<item historyLabel="sine.c" index="0">
-<position info="not_deleted" x="4675" y="0"/>
-</item>
-<item historyLabel="sine.c" index="0">
-<position info="not_deleted" x="4964" y="0"/>
-</item>
-<item active="true" historyLabel="sine.c" index="0">
-<position info="not_deleted" x="4964" y="0"/>
-</item>
-</navigationHistory>
+<navigationHistory/>
 <stickyState>
 <perspective IMemento.internal.id="org.eclipse.debug.ui.DebugPerspective">
 <view IMemento.internal.id="org.eclipse.ui.cheatsheets.views.CheatSheetView"/>

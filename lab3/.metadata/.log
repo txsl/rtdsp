@@ -1,0 +1,238 @@
+!SESSION 2014-02-12 09:51:16.396 -----------------------------------------------
+eclipse.buildId=4.1.3.00038
+java.version=1.5.0_14
+java.vendor=Sun Microsystems Inc.
+BootLoader constants: OS=win32, ARCH=x86, WS=win32, NL=en_GB
+Command-line arguments:  -os win32 -ws win32 -arch x86
+
+!ENTRY org.eclipse.core.resources 2 10035 2014-02-12 09:51:50.415
+!MESSAGE A workspace crash was detected. The previous session did not exit normally.
+!SESSION 2014-02-13 15:18:25.814 -----------------------------------------------
+eclipse.buildId=4.1.3.00038
+java.version=1.5.0_14
+java.vendor=Sun Microsystems Inc.
+BootLoader constants: OS=win32, ARCH=x86, WS=win32, NL=en_GB
+Command-line arguments:  -os win32 -ws win32 -arch x86
+
+!ENTRY org.eclipse.core.resources 2 10035 2014-02-13 15:18:55.407
+!MESSAGE A workspace crash was detected. The previous session did not exit normally.
+
+!ENTRY org.eclipse.core.resources 4 566 2014-02-13 15:55:36.056
+!MESSAGE An error occurred while traversing resources.
+!STACK 0
+java.lang.IllegalArgumentException: ProducerArgument not null!!!
+
+	at org.eclipse.cdt.managedbuilder.internal.buildmodel.BuildResource.addToArg(BuildResource.java:120)
+	at org.eclipse.cdt.managedbuilder.internal.buildmodel.BuildIOType.addResource(BuildIOType.java:64)
+	at org.eclipse.cdt.managedbuilder.internal.buildmodel.BuildDescription.addOutputs(BuildDescription.java:906)
+	at org.eclipse.cdt.managedbuilder.internal.buildmodel.BuildDescription.calculateOutputs(BuildDescription.java:1178)
+	at org.eclipse.cdt.managedbuilder.internal.buildmodel.BuildDescription.composeOutputs(BuildDescription.java:596)
+	at org.eclipse.cdt.managedbuilder.internal.buildmodel.BuildDescription.composeOutputs(BuildDescription.java:603)
+	at org.eclipse.cdt.managedbuilder.internal.buildmodel.BuildDescription.access$1(BuildDescription.java:496)
+	at org.eclipse.cdt.managedbuilder.internal.buildmodel.BuildDescription$RcVisitor.doVisitFile(BuildDescription.java:206)
+	at org.eclipse.cdt.managedbuilder.internal.buildmodel.BuildDescription$RcVisitor.visit(BuildDescription.java:136)
+	at org.eclipse.core.internal.resources.Resource$1.visitElement(Resource.java:57)
+	at org.eclipse.core.internal.watson.ElementTreeIterator.doIteration(ElementTreeIterator.java:81)
+	at org.eclipse.core.internal.watson.ElementTreeIterator.doIteration(ElementTreeIterator.java:85)
+	at org.eclipse.core.internal.watson.ElementTreeIterator.doIteration(ElementTreeIterator.java:85)
+	at org.eclipse.core.internal.watson.ElementTreeIterator.doIteration(ElementTreeIterator.java:85)
+	at org.eclipse.core.internal.watson.ElementTreeIterator.doIteration(ElementTreeIterator.java:85)
+	at org.eclipse.core.internal.watson.ElementTreeIterator.doIteration(ElementTreeIterator.java:85)
+	at org.eclipse.core.internal.watson.ElementTreeIterator.iterate(ElementTreeIterator.java:126)
+	at org.eclipse.core.internal.resources.Resource.accept(Resource.java:67)
+	at org.eclipse.cdt.managedbuilder.internal.buildmodel.BuildDescription.initDescription(BuildDescription.java:681)
+	at org.eclipse.cdt.managedbuilder.internal.buildmodel.BuildDescription.init(BuildDescription.java:704)
+	at org.eclipse.cdt.managedbuilder.internal.buildmodel.DefaultBuildDescriptionFactory.createBuildDescription(DefaultBuildDescriptionFactory.java:37)
+	at org.eclipse.cdt.managedbuilder.buildmodel.BuildDescriptionManager.createBuildDescription(BuildDescriptionManager.java:81)
+	at org.eclipse.cdt.managedbuilder.internal.core.GeneratedMakefileBuilder.build(GeneratedMakefileBuilder.java:533)
+	at org.eclipse.core.internal.events.BuildManager$2.run(BuildManager.java:603)
+	at org.eclipse.core.runtime.SafeRunner.run(SafeRunner.java:37)
+	at org.eclipse.core.internal.events.BuildManager.basicBuild(BuildManager.java:167)
+	at org.eclipse.core.internal.events.BuildManager.basicBuild(BuildManager.java:201)
+	at org.eclipse.core.internal.events.BuildManager$1.run(BuildManager.java:230)
+	at org.eclipse.core.runtime.SafeRunner.run(SafeRunner.java:37)
+	at org.eclipse.core.internal.events.BuildManager.basicBuild(BuildManager.java:233)
+	at org.eclipse.core.internal.events.BuildManager.build(BuildManager.java:307)
+	at org.eclipse.core.internal.resources.Project.build(Project.java:88)
+	at org.eclipse.cdt.launch.AbstractCLaunchDelegate.buildForLaunch(AbstractCLaunchDelegate.java:524)
+	at com.ti.ccstudio.debug.core.launch.BaseCCELaunchDelegate.buildForLaunch(BaseCCELaunchDelegate.java:235)
+	at org.eclipse.debug.internal.core.LaunchConfiguration.launch(LaunchConfiguration.java:636)
+	at org.eclipse.debug.internal.core.LaunchConfiguration.launch(LaunchConfiguration.java:583)
+	at org.eclipse.debug.internal.ui.DebugUIPlugin.buildAndLaunch(DebugUIPlugin.java:779)
+	at org.eclipse.debug.internal.ui.DebugUIPlugin$4.run(DebugUIPlugin.java:835)
+	at org.eclipse.jface.operation.ModalContext$ModalContextThread.run(ModalContext.java:113)
+
+!ENTRY com.ti.ccstudio.debug.core 4 0 2014-02-13 15:55:38.089
+!MESSAGE Error: TMS320C671X: Error initializing emulator 
+
+
+!ENTRY com.ti.ccstudio.debug.core 4 0 2014-02-13 15:55:41.408
+!MESSAGE Error: TMS320C671X: Error initializing emulator 
+
+
+!ENTRY org.eclipse.core.resources 4 566 2014-02-13 15:56:43.479
+!MESSAGE An error occurred while traversing resources.
+!STACK 0
+java.lang.IllegalArgumentException: ProducerArgument not null!!!
+
+	at org.eclipse.cdt.managedbuilder.internal.buildmodel.BuildResource.addToArg(BuildResource.java:120)
+	at org.eclipse.cdt.managedbuilder.internal.buildmodel.BuildIOType.addResource(BuildIOType.java:64)
+	at org.eclipse.cdt.managedbuilder.internal.buildmodel.BuildDescription.addOutputs(BuildDescription.java:906)
+	at org.eclipse.cdt.managedbuilder.internal.buildmodel.BuildDescription.calculateOutputs(BuildDescription.java:1178)
+	at org.eclipse.cdt.managedbuilder.internal.buildmodel.BuildDescription.composeOutputs(BuildDescription.java:596)
+	at org.eclipse.cdt.managedbuilder.internal.buildmodel.BuildDescription.composeOutputs(BuildDescription.java:603)
+	at org.eclipse.cdt.managedbuilder.internal.buildmodel.BuildDescription.access$1(BuildDescription.java:496)
+	at org.eclipse.cdt.managedbuilder.internal.buildmodel.BuildDescription$RcVisitor.doVisitFile(BuildDescription.java:206)
+	at org.eclipse.cdt.managedbuilder.internal.buildmodel.BuildDescription$RcVisitor.visit(BuildDescription.java:136)
+	at org.eclipse.core.internal.resources.Resource$1.visitElement(Resource.java:57)
+	at org.eclipse.core.internal.watson.ElementTreeIterator.doIteration(ElementTreeIterator.java:81)
+	at org.eclipse.core.internal.watson.ElementTreeIterator.doIteration(ElementTreeIterator.java:85)
+	at org.eclipse.core.internal.watson.ElementTreeIterator.doIteration(ElementTreeIterator.java:85)
+	at org.eclipse.core.internal.watson.ElementTreeIterator.doIteration(ElementTreeIterator.java:85)
+	at org.eclipse.core.internal.watson.ElementTreeIterator.doIteration(ElementTreeIterator.java:85)
+	at org.eclipse.core.internal.watson.ElementTreeIterator.doIteration(ElementTreeIterator.java:85)
+	at org.eclipse.core.internal.watson.ElementTreeIterator.iterate(ElementTreeIterator.java:126)
+	at org.eclipse.core.internal.resources.Resource.accept(Resource.java:67)
+	at org.eclipse.cdt.managedbuilder.internal.buildmodel.BuildDescription.initDescription(BuildDescription.java:681)
+	at org.eclipse.cdt.managedbuilder.internal.buildmodel.BuildDescription.init(BuildDescription.java:704)
+	at org.eclipse.cdt.managedbuilder.internal.buildmodel.DefaultBuildDescriptionFactory.createBuildDescription(DefaultBuildDescriptionFactory.java:37)
+	at org.eclipse.cdt.managedbuilder.buildmodel.BuildDescriptionManager.createBuildDescription(BuildDescriptionManager.java:81)
+	at org.eclipse.cdt.managedbuilder.internal.core.GeneratedMakefileBuilder.build(GeneratedMakefileBuilder.java:533)
+	at org.eclipse.core.internal.events.BuildManager$2.run(BuildManager.java:603)
+	at org.eclipse.core.runtime.SafeRunner.run(SafeRunner.java:37)
+	at org.eclipse.core.internal.events.BuildManager.basicBuild(BuildManager.java:167)
+	at org.eclipse.core.internal.events.BuildManager.basicBuild(BuildManager.java:201)
+	at org.eclipse.core.internal.events.BuildManager$1.run(BuildManager.java:230)
+	at org.eclipse.core.runtime.SafeRunner.run(SafeRunner.java:37)
+	at org.eclipse.core.internal.events.BuildManager.basicBuild(BuildManager.java:233)
+	at org.eclipse.core.internal.events.BuildManager.build(BuildManager.java:307)
+	at org.eclipse.core.internal.resources.Project.build(Project.java:88)
+	at org.eclipse.cdt.launch.AbstractCLaunchDelegate.buildForLaunch(AbstractCLaunchDelegate.java:524)
+	at com.ti.ccstudio.debug.core.launch.BaseCCELaunchDelegate.buildForLaunch(BaseCCELaunchDelegate.java:235)
+	at org.eclipse.debug.internal.core.LaunchConfiguration.launch(LaunchConfiguration.java:636)
+	at org.eclipse.debug.internal.core.LaunchConfiguration.launch(LaunchConfiguration.java:583)
+	at org.eclipse.debug.internal.ui.DebugUIPlugin.buildAndLaunch(DebugUIPlugin.java:779)
+	at org.eclipse.debug.internal.ui.DebugUIPlugin$4.run(DebugUIPlugin.java:835)
+	at org.eclipse.jface.operation.ModalContext$ModalContextThread.run(ModalContext.java:113)
+
+!ENTRY com.ti.ccstudio.debug.core 4 0 2014-02-13 15:56:45.417
+!MESSAGE Error: TMS320C671X: Error initializing emulator 
+
+
+!ENTRY com.ti.ccstudio.debug.core 4 0 2014-02-13 15:57:06.844
+!MESSAGE Error: TMS320C671X: Error initializing emulator 
+
+!SESSION 2014-02-13 15:57:26.221 -----------------------------------------------
+eclipse.buildId=4.1.3.00038
+java.version=1.5.0_14
+java.vendor=Sun Microsystems Inc.
+BootLoader constants: OS=win32, ARCH=x86, WS=win32, NL=en_GB
+Command-line arguments:  -os win32 -ws win32 -arch x86
+
+!ENTRY org.eclipse.core.resources 4 566 2014-02-13 15:58:40.128
+!MESSAGE An error occurred while traversing resources.
+!STACK 0
+java.lang.IllegalArgumentException: ProducerArgument not null!!!
+
+	at org.eclipse.cdt.managedbuilder.internal.buildmodel.BuildResource.addToArg(BuildResource.java:120)
+	at org.eclipse.cdt.managedbuilder.internal.buildmodel.BuildIOType.addResource(BuildIOType.java:64)
+	at org.eclipse.cdt.managedbuilder.internal.buildmodel.BuildDescription.addOutputs(BuildDescription.java:906)
+	at org.eclipse.cdt.managedbuilder.internal.buildmodel.BuildDescription.calculateOutputs(BuildDescription.java:1178)
+	at org.eclipse.cdt.managedbuilder.internal.buildmodel.BuildDescription.composeOutputs(BuildDescription.java:596)
+	at org.eclipse.cdt.managedbuilder.internal.buildmodel.BuildDescription.composeOutputs(BuildDescription.java:603)
+	at org.eclipse.cdt.managedbuilder.internal.buildmodel.BuildDescription.access$1(BuildDescription.java:496)
+	at org.eclipse.cdt.managedbuilder.internal.buildmodel.BuildDescription$RcVisitor.doVisitFile(BuildDescription.java:206)
+	at org.eclipse.cdt.managedbuilder.internal.buildmodel.BuildDescription$RcVisitor.visit(BuildDescription.java:136)
+	at org.eclipse.core.internal.resources.Resource$1.visitElement(Resource.java:57)
+	at org.eclipse.core.internal.watson.ElementTreeIterator.doIteration(ElementTreeIterator.java:81)
+	at org.eclipse.core.internal.watson.ElementTreeIterator.doIteration(ElementTreeIterator.java:85)
+	at org.eclipse.core.internal.watson.ElementTreeIterator.doIteration(ElementTreeIterator.java:85)
+	at org.eclipse.core.internal.watson.ElementTreeIterator.doIteration(ElementTreeIterator.java:85)
+	at org.eclipse.core.internal.watson.ElementTreeIterator.doIteration(ElementTreeIterator.java:85)
+	at org.eclipse.core.internal.watson.ElementTreeIterator.doIteration(ElementTreeIterator.java:85)
+	at org.eclipse.core.internal.watson.ElementTreeIterator.iterate(ElementTreeIterator.java:126)
+	at org.eclipse.core.internal.resources.Resource.accept(Resource.java:67)
+	at org.eclipse.cdt.managedbuilder.internal.buildmodel.BuildDescription.initDescription(BuildDescription.java:681)
+	at org.eclipse.cdt.managedbuilder.internal.buildmodel.BuildDescription.init(BuildDescription.java:704)
+	at org.eclipse.cdt.managedbuilder.internal.buildmodel.DefaultBuildDescriptionFactory.createBuildDescription(DefaultBuildDescriptionFactory.java:37)
+	at org.eclipse.cdt.managedbuilder.buildmodel.BuildDescriptionManager.createBuildDescription(BuildDescriptionManager.java:81)
+	at org.eclipse.cdt.managedbuilder.internal.core.GeneratedMakefileBuilder.build(GeneratedMakefileBuilder.java:533)
+	at org.eclipse.core.internal.events.BuildManager$2.run(BuildManager.java:603)
+	at org.eclipse.core.runtime.SafeRunner.run(SafeRunner.java:37)
+	at org.eclipse.core.internal.events.BuildManager.basicBuild(BuildManager.java:167)
+	at org.eclipse.core.internal.events.BuildManager.basicBuild(BuildManager.java:201)
+	at org.eclipse.core.internal.events.BuildManager$1.run(BuildManager.java:230)
+	at org.eclipse.core.runtime.SafeRunner.run(SafeRunner.java:37)
+	at org.eclipse.core.internal.events.BuildManager.basicBuild(BuildManager.java:233)
+	at org.eclipse.core.internal.events.BuildManager.build(BuildManager.java:307)
+	at org.eclipse.core.internal.resources.Project.build(Project.java:88)
+	at org.eclipse.cdt.launch.AbstractCLaunchDelegate.buildForLaunch(AbstractCLaunchDelegate.java:524)
+	at com.ti.ccstudio.debug.core.launch.BaseCCELaunchDelegate.buildForLaunch(BaseCCELaunchDelegate.java:235)
+	at org.eclipse.debug.internal.core.LaunchConfiguration.launch(LaunchConfiguration.java:636)
+	at org.eclipse.debug.internal.core.LaunchConfiguration.launch(LaunchConfiguration.java:583)
+	at org.eclipse.debug.internal.ui.DebugUIPlugin.buildAndLaunch(DebugUIPlugin.java:779)
+	at org.eclipse.debug.internal.ui.DebugUIPlugin$4.run(DebugUIPlugin.java:835)
+	at org.eclipse.jface.operation.ModalContext$ModalContextThread.run(ModalContext.java:113)
+
+!ENTRY com.ti.ccstudio.debug.core 4 0 2014-02-13 15:58:42.064
+!MESSAGE Error: TMS320C671X: Error initializing emulator 
+
+
+!ENTRY com.ti.ccstudio.debug.core 4 0 2014-02-13 15:58:43.883
+!MESSAGE Error: TMS320C671X: Error initializing emulator 
+
+!SESSION 2014-02-13 16:04:33.613 -----------------------------------------------
+eclipse.buildId=4.1.3.00038
+java.version=1.5.0_14
+java.vendor=Sun Microsystems Inc.
+BootLoader constants: OS=win32, ARCH=x86, WS=win32, NL=en_GB
+Command-line arguments:  -os win32 -ws win32 -arch x86
+
+!ENTRY org.eclipse.core.resources 4 566 2014-02-13 16:06:23.850
+!MESSAGE An error occurred while traversing resources.
+!STACK 0
+java.lang.IllegalArgumentException: ProducerArgument not null!!!
+
+	at org.eclipse.cdt.managedbuilder.internal.buildmodel.BuildResource.addToArg(BuildResource.java:120)
+	at org.eclipse.cdt.managedbuilder.internal.buildmodel.BuildIOType.addResource(BuildIOType.java:64)
+	at org.eclipse.cdt.managedbuilder.internal.buildmodel.BuildDescription.addOutputs(BuildDescription.java:906)
+	at org.eclipse.cdt.managedbuilder.internal.buildmodel.BuildDescription.calculateOutputs(BuildDescription.java:1178)
+	at org.eclipse.cdt.managedbuilder.internal.buildmodel.BuildDescription.composeOutputs(BuildDescription.java:596)
+	at org.eclipse.cdt.managedbuilder.internal.buildmodel.BuildDescription.composeOutputs(BuildDescription.java:603)
+	at org.eclipse.cdt.managedbuilder.internal.buildmodel.BuildDescription.access$1(BuildDescription.java:496)
+	at org.eclipse.cdt.managedbuilder.internal.buildmodel.BuildDescription$RcVisitor.doVisitFile(BuildDescription.java:206)
+	at org.eclipse.cdt.managedbuilder.internal.buildmodel.BuildDescription$RcVisitor.visit(BuildDescription.java:136)
+	at org.eclipse.core.internal.resources.Resource$1.visitElement(Resource.java:57)
+	at org.eclipse.core.internal.watson.ElementTreeIterator.doIteration(ElementTreeIterator.java:81)
+	at org.eclipse.core.internal.watson.ElementTreeIterator.doIteration(ElementTreeIterator.java:85)
+	at org.eclipse.core.internal.watson.ElementTreeIterator.doIteration(ElementTreeIterator.java:85)
+	at org.eclipse.core.internal.watson.ElementTreeIterator.doIteration(ElementTreeIterator.java:85)
+	at org.eclipse.core.internal.watson.ElementTreeIterator.doIteration(ElementTreeIterator.java:85)
+	at org.eclipse.core.internal.watson.ElementTreeIterator.doIteration(ElementTreeIterator.java:85)
+	at org.eclipse.core.internal.watson.ElementTreeIterator.iterate(ElementTreeIterator.java:126)
+	at org.eclipse.core.internal.resources.Resource.accept(Resource.java:67)
+	at org.eclipse.cdt.managedbuilder.internal.buildmodel.BuildDescription.initDescription(BuildDescription.java:681)
+	at org.eclipse.cdt.managedbuilder.internal.buildmodel.BuildDescription.init(BuildDescription.java:704)
+	at org.eclipse.cdt.managedbuilder.internal.buildmodel.DefaultBuildDescriptionFactory.createBuildDescription(DefaultBuildDescriptionFactory.java:37)
+	at org.eclipse.cdt.managedbuilder.buildmodel.BuildDescriptionManager.createBuildDescription(BuildDescriptionManager.java:81)
+	at org.eclipse.cdt.managedbuilder.internal.core.GeneratedMakefileBuilder.build(GeneratedMakefileBuilder.java:533)
+	at org.eclipse.core.internal.events.BuildManager$2.run(BuildManager.java:603)
+	at org.eclipse.core.runtime.SafeRunner.run(SafeRunner.java:37)
+	at org.eclipse.core.internal.events.BuildManager.basicBuild(BuildManager.java:167)
+	at org.eclipse.core.internal.events.BuildManager.basicBuild(BuildManager.java:201)
+	at org.eclipse.core.internal.events.BuildManager$1.run(BuildManager.java:230)
+	at org.eclipse.core.runtime.SafeRunner.run(SafeRunner.java:37)
+	at org.eclipse.core.internal.events.BuildManager.basicBuild(BuildManager.java:233)
+	at org.eclipse.core.internal.events.BuildManager.build(BuildManager.java:307)
+	at org.eclipse.core.internal.resources.Project.build(Project.java:88)
+	at org.eclipse.cdt.launch.AbstractCLaunchDelegate.buildForLaunch(AbstractCLaunchDelegate.java:524)
+	at com.ti.ccstudio.debug.core.launch.BaseCCELaunchDelegate.buildForLaunch(BaseCCELaunchDelegate.java:235)
+	at org.eclipse.debug.internal.core.LaunchConfiguration.launch(LaunchConfiguration.java:636)
+	at org.eclipse.debug.internal.core.LaunchConfiguration.launch(LaunchConfiguration.java:583)
+	at org.eclipse.debug.internal.ui.DebugUIPlugin.buildAndLaunch(DebugUIPlugin.java:779)
+	at org.eclipse.debug.internal.ui.DebugUIPlugin$4.run(DebugUIPlugin.java:835)
+	at org.eclipse.jface.operation.ModalContext$ModalContextThread.run(ModalContext.java:113)
+
+!ENTRY com.ti.ccstudio.debug.core 4 0 2014-02-13 16:35:12.356
+!MESSAGE Fatal Error: TMS320C671X: Error: Error 0xA0012080/-1250 Error during: Target Communication, Control, RTDX,  Device driver: Lost USB connection to emulator. You should ABORT and restart to re-establish the USB link.  
+

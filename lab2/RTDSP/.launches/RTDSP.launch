@@ -14,7 +14,7 @@
 <stringAttribute key="CCEDebugOptions.TARGET_CONFIGURATION_OPTION" value="full"/>
 <stringAttribute key="org.eclipse.cdt.launch.MEMORY_BLOCKS" value="&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;&#13;&#10;&lt;memoryBlockExpressionList/&gt;&#13;&#10;"/>
 <stringAttribute key="com.ti.ccstudio.debug.core.MRU_PROGRAM_NAME" value="L:\RTDSPlab\lab2\RTDSP\Debug\RTDSP.out"/>
-<stringAttribute key="com.ti.ccstudio.debug.core.MRU_MODULES" value="&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;&#13;&#10;&lt;modules&gt;&#13;&#10;&lt;module name=&quot;L:\RTDSPlab\lab2\RTDSP\Debug\RTDSP.out&quot; time=&quot;Thu Feb 06 15:59:31 GMT 2014&quot; time_long=&quot;1391702371396&quot;/&gt;&#13;&#10;&lt;/modules&gt;&#13;&#10;"/>
+<stringAttribute key="com.ti.ccstudio.debug.core.MRU_MODULES" value="&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;&#13;&#10;&lt;modules&gt;&#13;&#10;&lt;module name=&quot;L:\RTDSPlab\lab2\RTDSP\Debug\RTDSP.out&quot; time=&quot;Thu Feb 13 14:34:21 GMT 2014&quot; time_long=&quot;1392302061918&quot;/&gt;&#13;&#10;&lt;/modules&gt;&#13;&#10;"/>
 <stringAttribute key="CCEDebugOptions.CPU_NAME" value="Spectrum Digital DSK-EVM-eZdsp onboard USB Emulator_0/TMS320C671X"/>
 <stringAttribute key="org.eclipse.cdt.launch.PROJECT_ATTR" value="RTDSP"/>
 <stringAttribute key="org.eclipse.cdt.launch.GLOBAL_VARIABLES" value="&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;&#13;&#10;&lt;globalVariableList/&gt;&#13;&#10;"/>
