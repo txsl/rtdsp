@@ -36,7 +36,8 @@
 
 // Some functions to help with writing/reading the audio ports when using interrupts.
 #include <helper_functions_ISR.h>
-
+#define PI 3.141592653 // define PI for sine table generation #define SINE_TABLE_SIZE 256 // define size
+#define SINE_TABLE_SIZE 256 // define size
 /******************************* Global declarations ********************************/
 
 /* Audio port configuration settings: these values set registers in the AIC23 audio 
@@ -62,23 +63,30 @@ DSK6713_AIC23_Config Config = { \
 // Codec handle:- a variable used to identify audio interface  
 DSK6713_AIC23_CodecHandle H_Codec;
 
+float sine_freq;
+float table[SINE_TABLE_SIZE];
+float index = 0;
+float gain = 32767;
+
  /******************************* Function prototypes ********************************/
-void init_hardware(void);     
-void init_HWI(void);                   
+void init_sine(void);
+void init_hardware(void);
+void init_HWI(void);
 /********************************** Main routine ************************************/
 void main(){
 
- 
+	// initliase sine
+	init_sine();
+
 	// initialize board and the audio port
-  init_hardware();
-	
-  /* initialize hardware interrupts */
-  init_HWI();
-  	 		
-  /* loop indefinitely, waiting for interrupts */  					
-  while(1) 
-  {};
-  
+	init_hardware();
+
+	// initialize hardware interrupts
+	init_HWI();
+			
+	// loop indefinitely, waiting for interrupts
+	while(1) 
+	{};
 }
         
 /********************************** init_hardware() **********************************/  
@@ -107,6 +115,27 @@ void init_hardware()
 
 }
 
+/********************************** init_sine() **********************************/  
+void init_sine()
+{
+	// initialising our sinusoid at this point.
+	// To save time at the output stage, we're creating an "absolute" sine table
+	// i.e. our sin does NOT have negative values!
+
+    int i;
+	for (i = 0; i < SINE_TABLE_SIZE; i++)
+	{
+		float temp = sin(2*PI*i / SINE_TABLE_SIZE);
+		
+		// get absolute value...
+		if (temp < 0) { temp = -temp; }
+		
+		// save it up!
+		table[i] = table;
+	}
+}
+
+
 /********************************** init_HWI() **************************************/  
 void init_HWI(void)
 {
@@ -122,10 +151,18 @@ void init_HWI(void)
 
 void ISR_AIC(void)
 {
-	int temp;
+	/* int temp;
 	temp = mono_read_16Bit();
 	if (temp < 0)
 		temp = 0-temp;
-	mono_write_16Bit(temp);
+	mono_write_16Bit(temp); */
+
+	index += (SINE_TABLE_SIZE)/(8000/sine_freq);
+
+	while(index > SINE_TABLE_SIZE) {
+		index -= SINE_TABLE_SIZE;
+	}
+
+	mono_write_16Bit((int)(table[index] * gain));
 }
-  
+
