@@ -63,10 +63,13 @@ DSK6713_AIC23_Config Config = { \
 // Codec handle:- a variable used to identify audio interface  
 DSK6713_AIC23_CodecHandle H_Codec;
 
-float sine_freq;
-float table[SINE_TABLE_SIZE];
-float index = 0;
-float gain = 32767;
+float sine_freq = 1000; //let's default to 1000 
+float table[SINE_TABLE_SIZE]; // table to store sine wave
+float index = 0; // our current position in the table - used to generate sine waves
+float gain = 32767; // output must be 16 BIT SGN = 15BIT USGN.
+					// Sine is between 0-1, so gain*1 must be below max(15bit USGN)
+					// (2^15) - 1 is biggest int we can represent
+					// = 32767! 
 
  /******************************* Function prototypes ********************************/
 void init_sine(void);
@@ -131,7 +134,7 @@ void init_sine()
 		if (temp < 0) { temp = -temp; }
 		
 		// save it up!
-		table[i] = table;
+		table[i] = temp;
 	}
 }
 
@@ -163,6 +166,6 @@ void ISR_AIC(void)
 		index -= SINE_TABLE_SIZE;
 	}
 
-	mono_write_16Bit((int)(table[index] * gain));
+	mono_write_16Bit((int)(table[(int)index] * gain));
 }
 
