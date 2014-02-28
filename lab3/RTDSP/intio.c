@@ -36,8 +36,11 @@
 
 // Some functions to help with writing/reading the audio ports when using interrupts.
 #include <helper_functions_ISR.h>
-#define PI 3.141592653 // define PI for sine table generation #define SINE_TABLE_SIZE 256 // define size
-#define SINE_TABLE_SIZE 256 // define size
+
+// Constants needed for our sine wave generation
+#define PI 3.141592653 // define PI for sine table generation
+#define SINE_TABLE_SIZE 256 // define size of the table
+
 /******************************* Global declarations ********************************/
 
 /* Audio port configuration settings: these values set registers in the AIC23 audio 
@@ -63,6 +66,7 @@ DSK6713_AIC23_Config Config = { \
 // Codec handle:- a variable used to identify audio interface  
 DSK6713_AIC23_CodecHandle H_Codec;
 
+// Our global variables for the output
 float sine_freq = 1000; //let's default to 1000 
 float table[SINE_TABLE_SIZE]; // table to store sine wave
 float index = 0; // our current position in the table - used to generate sine waves
@@ -131,7 +135,9 @@ void init_sine()
 		float temp = sin(2*PI*i / SINE_TABLE_SIZE);
 		
 		// get absolute value...
-		if (temp < 0) { temp = -temp; }
+		if (temp < 0) {
+			temp = -temp;
+		}
 		
 		// save it up!
 		table[i] = temp;
@@ -154,18 +160,18 @@ void init_HWI(void)
 
 void ISR_AIC(void)
 {
-	/* int temp;
-	temp = mono_read_16Bit();
-	if (temp < 0)
-		temp = 0-temp;
-	mono_write_16Bit(temp); */
-
+	// We save the position in the sine table through the global variable 'index'
+	// On every call, we add to the % of the sine table we go through at each sample, which is SIZE_OF_TABLE/(sample_rate/sine_freq)
+	// However, we hardcore our sample rate at 8000 Hz 
 	index += (SINE_TABLE_SIZE)/(8000/sine_freq);
 
+	// we need to make sure we're in the correct index
 	while(index > SINE_TABLE_SIZE) {
 		index -= SINE_TABLE_SIZE;
 	}
 
+	// and let's output our number magic!
+	// This is the value from the table selected based on the index, multiplied by our gain, and converted to an integer.
 	mono_write_16Bit((int)(table[(int)index] * gain));
 }
 
