@@ -122,10 +122,11 @@ void init_HWI(void)
 
 void ISR_AIC(void)
 {
-	int temp;
-	temp = mono_read_16Bit();
-	if (temp < 0)
-		temp = 0-temp;
-	mono_write_16Bit(temp);
+	int temp; // Set up a variable to hold the input
+	
+	temp = mono_read_16Bit(); // let's take the input!
+	
+	if (temp < 0)           // if it's negative...
+		temp = 0-temp;      // invert..
+	mono_write_16Bit(temp); // and output
 }
-  
