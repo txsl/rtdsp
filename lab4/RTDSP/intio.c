@@ -6,7 +6,7 @@
 					       Dr Paul Mitcheson and Daniel Harvey
 
 				        		  LAB 3: Interrupt I/O
-
+								   MODIFIED FOR LAB 4!
  				            ********* I N T I O. C **********
 
   Demonstrates inputing and outputing data from the DSK's audio port using interrupts. 
@@ -62,9 +62,10 @@ DSK6713_AIC23_Config Config = { \
 #define N 88
 
 double x[N];
-
-int gain = 1;
-//int gain = 32767/N; // ( (2^15)-1 ) / N;
+double sample;
+double output;
+int i;
+int circIndex = 0;
 
 // Codec handle:- a variable used to identify audio interface  
 DSK6713_AIC23_CodecHandle H_Codec;
@@ -132,34 +133,42 @@ void init_HWI(void)
 } 
 
 /******************** WRITE YOUR INTERRUPT SERVICE ROUTINE HERE***********************/  
-void non_circ_FIR(void)
+double non_circ_FIR(void)
 {
-	int i;
-	float output;
-	
-	output = 0.0;
-	
-	for (i = N-1; i>=0; i--)
-	{
-		output += x[i] * b[i];
-	}
-	
-	mono_write_16Bit(output);
-}
-
-void ISR_AIC(void)
-{
-	int i;
-	int sample_in;
-	
-	sample_in = mono_read_16Bit();
-	
 	for (i=N-1; i>0; i--)
 	{
 		x[i] = x[i-1];
 	}
-	x[0] = sample_in;
+	x[0] = mono_read_16Bit();
 	
-	non_circ_FIR();
+	output = 0.0;
+	for (i = N-1; i>=0; i--)
+	{
+		output += x[i] * b[i];
+	}
+	return output;
+}
+
+double basic_circ_FIR(void)
+{
+	x[circIndex] = mono_read_16Bit();
+	output = 0.0;
+	
+	for( i=0; i<N-circIndex; i++ ) {
+		output += x[circIndex+i] * b[i];
+	}
+	
+	for (i = N-circIndex; i<N; i++){
+		output += x[circIndex+i-N]*b[i];
+	}
+	
+	circIndex++;
+	if (circIndex == N) { circIndex=0; }
+	return output;
+}
+
+void ISR_AIC(void)
+{
+	mono_write_16Bit(basic_circ_FIR());
 }
 
