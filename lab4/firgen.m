@@ -8,7 +8,7 @@ dev = [10^(-rs/20) (10^(rp/20)-1)/(10^(rp/20)+1)  10^(-rs/20)];
 
 [n,fo,ao,w] = firpmord(f,a,dev,fs);
 
-b = firpm(n,fo,ao,w)
+b = firpm(n+10,fo,ao,w)
 
 save('RTDSP/coeffs.txt', 'b','-ascii', '-double', '-tabs')
 

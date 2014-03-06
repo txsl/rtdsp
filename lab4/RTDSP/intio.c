@@ -37,6 +37,7 @@
 // Some functions to help with writing/reading the audio ports when using interrupts.
 #include <helper_functions_ISR.h>
 
+#include "coeffs.txt"
 /******************************* Global declarations ********************************/
 
 /* Audio port configuration settings: these values set registers in the AIC23 audio 
@@ -58,6 +59,12 @@ DSK6713_AIC23_Config Config = { \
 			 /**********************************************************************/
 };
 
+#define N 88
+
+double x[N];
+
+int gain = 1;
+//int gain = 32767/N; // ( (2^15)-1 ) / N;
 
 // Codec handle:- a variable used to identify audio interface  
 DSK6713_AIC23_CodecHandle H_Codec;
@@ -84,6 +91,12 @@ void main(){
 /********************************** init_hardware() **********************************/  
 void init_hardware()
 {
+	int i;
+	for (i = 0; i<N; i++)
+	{
+		x[i] = 0.0;
+	}
+	
     // Initialize the board support library, must be called first 
     DSK6713_init();
     
@@ -119,14 +132,34 @@ void init_HWI(void)
 } 
 
 /******************** WRITE YOUR INTERRUPT SERVICE ROUTINE HERE***********************/  
+void non_circ_FIR(void)
+{
+	int i;
+	float output;
+	
+	output = 0.0;
+	
+	for (i = N-1; i>=0; i--)
+	{
+		output += x[i] * b[i];
+	}
+	
+	mono_write_16Bit(output);
+}
 
 void ISR_AIC(void)
 {
-	int temp; // Set up a variable to hold the input
+	int i;
+	int sample_in;
 	
-	temp = mono_read_16Bit(); // let's take the input!
+	sample_in = mono_read_16Bit();
 	
-	if (temp < 0)           // if it's negative...
-		temp = 0-temp;      // invert..
-	mono_write_16Bit(temp); // and output
+	for (i=N-1; i>0; i--)
+	{
+		x[i] = x[i-1];
+	}
+	x[0] = sample_in;
+	
+	non_circ_FIR();
 }
+
