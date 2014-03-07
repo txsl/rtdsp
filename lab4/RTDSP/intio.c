@@ -66,6 +66,7 @@ double sample;
 double output;
 int i;
 int circIndex = 0;
+int circIndex2 = N; //used for double memory circular IIR - see notes
 
 // Codec handle:- a variable used to identify audio interface  
 DSK6713_AIC23_CodecHandle H_Codec;
@@ -192,7 +193,7 @@ double symmetrical_circ_FIR_even(void)
 			output += b[i] * (x[circIndex+i] + x[circIndex - 1 - i]);
 		}
 		for (i=N-circIndex; i<N/2; i++){
-			output += b[i] * (x[circIndex + i - N] + x[circIndex - 1 - i + N]);
+			output += b[i] * (x[circIndex + i - N] + x[circIndex - 1 - i]);
 		}
 	}
 	
@@ -215,13 +216,12 @@ double symmetrical_circ_doublememory_FIR(void)
 
 	circIndex --;
 	if (circIndex < 0) { circIndex=N-1; }
-	circIndex2 = circIndex + N
+	circIndex2 = circIndex + N;
 	return output;
-
 }
 
 void ISR_AIC(void)
 {
-	mono_write_16Bit(basic_circ_FIR());
+	mono_write_16Bit(symmetrical_circ_doublememory_FIR());
 }
 
