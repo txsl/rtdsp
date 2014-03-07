@@ -59,7 +59,7 @@ DSK6713_AIC23_Config Config = { \
 			 /**********************************************************************/
 };
 
-#define N 88
+#define N 78
 
 double x[N];
 double sample;
@@ -76,9 +76,7 @@ void init_hardware(void);
 void init_HWI(void);                   
 /********************************** Main routine ************************************/
 void main(){
-
- 
-	// initialize board and the audio port
+  // initialize board and the audio port
   init_hardware();
 	
   /* initialize hardware interrupts */
@@ -222,6 +220,9 @@ double symmetrical_circ_doublememory_FIR(void)
 
 void ISR_AIC(void)
 {
-	mono_write_16Bit(symmetrical_circ_doublememory_FIR());
+	//mono_write_16Bit(non_circ_FIR());
+	//mono_write_16Bit(basic_circ_FIR());
+	mono_write_16Bit(symmetrical_circ_FIR_even());
+	//mono_write_16Bit(symmetrical_circ_doublememory_FIR());
 }
 
