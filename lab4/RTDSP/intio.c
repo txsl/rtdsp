@@ -37,15 +37,15 @@
 // Some functions to help with writing/reading the audio ports when using interrupts.
 #include <helper_functions_ISR.h>
 
-#include "coeffs.txt"
-/******************************* Global declarations ********************************/
+#include "coeffs.txt" // this holds our coefficients used for the FIR filter.
+/****************** Global declarations ********************/
 
 /* Audio port configuration settings: these values set registers in the AIC23 audio 
    interface to configure it. See TI doc SLWS106D 3-3 to 3-10 for more info. */
 DSK6713_AIC23_Config Config = { \
-			 /**********************************************************************/
+			 /*****************************************************/
 			 /*   REGISTER	            FUNCTION			      SETTINGS         */ 
-			 /**********************************************************************/\
+			 /*******************************************************/\
     0x0017,  /* 0 LEFTINVOL  Left line input channel volume  0dB                   */\
     0x0017,  /* 1 RIGHTINVOL Right line input channel volume 0dB                   */\
     0x01f9,  /* 2 LEFTHPVOL  Left channel headphone volume   0dB                   */\
@@ -56,12 +56,12 @@ DSK6713_AIC23_Config Config = { \
     0x0043,  /* 7 DIGIF      Digital audio interface format  16 bit                */\
     0x008d,  /* 8 SAMPLERATE Sample rate control             8 KHZ                 */\
     0x0001   /* 9 DIGACT     Digital interface activation    On                    */\
-			 /**********************************************************************/
+			 /***********************************************/
 };
 
-#define N 78
+#define N 78 // our number of samples is order of filter + 1. This value comes from matlab
 
-double x[N];
+double x[N]; // for double memory circular IIR, change this to x[2N];
 double sample;
 double output;
 int i;
@@ -71,10 +71,10 @@ int circIndex2 = N; //used for double memory circular IIR - see notes
 // Codec handle:- a variable used to identify audio interface  
 DSK6713_AIC23_CodecHandle H_Codec;
 
- /******************************* Function prototypes ********************************/
+ /**************** Function prototypes **********************/
 void init_hardware(void);     
 void init_HWI(void);                   
-/********************************** Main routine ************************************/
+/********************* Main routine *************************/
 void main(){
   // initialize board and the audio port
   init_hardware();
@@ -88,11 +88,11 @@ void main(){
   
 }
         
-/********************************** init_hardware() **********************************/  
+/******************* init_hardware() *********************/  
 void init_hardware()
 {
-	int i;
-	for (i = 0; i<N; i++)
+	// We initialise our input buffer here to make sure that it is wiped.
+	for (i = 0; i<N; i++) // for the double-memory implementation, change to i<2N
 	{
 		x[i] = 0.0;
 	}
@@ -134,35 +134,45 @@ void init_HWI(void)
 /******************** WRITE YOUR INTERRUPT SERVICE ROUTINE HERE***********************/  
 double non_circ_FIR(void)
 {
+	// Let's first shift all the values along one
+	// i.e. x[4] = x[3], ..., x[1] = x[0]
 	for (i=N-1; i>0; i--)
 	{
 		x[i] = x[i-1];
 	}
+	//and now we put the new value in
 	x[0] = mono_read_16Bit();
 	
-	output = 0.0;
+	output = 0.0; //reset output & perform MAC on all i
 	for (i = N-1; i>=0; i--)
 	{
 		output += x[i] * b[i];
 	}
-	return output;
+
+	return output; //return the output here
 }
 
 double basic_circ_FIR(void)
 {
+	//circIndex points to the oldest value, so lets overwrite that!
 	x[circIndex] = mono_read_16Bit();
-	output = 0.0;
+
+	output = 0.0; //reset output
 	
+	// loop until we reach the end of the input buffer (circIndex + i overflows)
 	for( i=0; i<N-circIndex; i++ ) {
 		output += x[circIndex+i] * b[i];
 	}
 	
+	// continue the MAC from where we left off, negating N though.
+	// This effectively implements MOD N, but without the overhead!
 	for (i = N-circIndex; i<N; i++){
 		output += x[circIndex+i-N]*b[i];
 	}
 	
+	// decrement circIndex, so that it points to the new 'oldest' x-value
 	circIndex--;
-	if (circIndex < 0) { circIndex=N-1; }
+	if (circIndex < 0) { circIndex=N-1; } //loop it around
 	return output;
 }
 
@@ -173,7 +183,8 @@ double symmetrical_circ_FIR_even(void)
 	output = 0.0;
 
 	// This is assuming out filter is EVEN
-	// If our index is in the lower half of the input buffer, we need to make sure that the x[index-1] doesn't go below -1.
+	// If our index is in the lower half of the input buffer,
+	// we need to make sure that the x[index-1-i] doesn't go below -1.
 	if (circIndex < (N/2))
 	{
 		// here we make sure x[index-1-i] stays above 0
@@ -184,7 +195,7 @@ double symmetrical_circ_FIR_even(void)
 			output += b[i] * (x[circIndex+i] + x[circIndex - 1 - i + N]);
 		}
 	}
-	else
+	else // here x[index+1] will overload
 	{
 		// Here we make sure that x[index+i] stays below N-1
 		for( i=0; i<N-circIndex; i++ ) {
@@ -195,34 +206,50 @@ double symmetrical_circ_FIR_even(void)
 		}
 	}
 	
-	//decrement index to make sure that the buffers are kept in order
+	//decrement index to make sure that the buffers are kept in order (as above)
 	circIndex--;
-	if (circIndex < 0) { circIndex=N-1; }
+	if (circIndex < 0) { circIndex=N-1; } //loop it around, ernie!
 	return output;
 }
 
 double symmetrical_circ_doublememory_FIR(void)
 {
-	x[circIndex] = mono_read_16Bit();
-	x[circIndex2] = x[circIndex];
-	output = 0.0;
+	// Use double the memory to make things pretty cool!
 
+	x[circIndex] = mono_read_16Bit(); //put input into the current index..
+	x[circIndex2] = x[circIndex];	// .. and copy it to the secnod index.
+	// we cant use the mono_read_16Bit(), as this might read the next value!
+
+
+	output = 0.0; // reset output
+
+	// now, let's loop through our filter coefficients, and multiply by the
+	// correct x inputs, avoiding the fear of overloading!
 	for (i=0; i<N/2; i++)
 	{
+		// x[index+i] can grow up to 2N-index, which is plenty
+		// x[index2-1-i] can go down to 2N-index, again, loads.
 		output += b[i] * ( x[circIndex+i] + x[circIndex2-1-i]);
 	}
 
+	//to update the indexes, we look at performing the logic on circIndex
 	circIndex --;
 	if (circIndex < 0) { circIndex=N-1; }
+	//and then propagating this value to circIndex2!
 	circIndex2 = circIndex + N;
-	return output;
+	return output; //Done!
 }
 
 void ISR_AIC(void)
 {
-	//mono_write_16Bit(non_circ_FIR());
+	mono_write_16Bit(non_circ_FIR());
 	//mono_write_16Bit(basic_circ_FIR());
-	mono_write_16Bit(symmetrical_circ_FIR_even());
+	//mono_write_16Bit(symmetrical_circ_FIR_even());
+
+	// MAKE SURE YOU MAKE THE NECCESSARY CHANGES BEFORE USING
+	// 1.) INCREASE the size of X to X[2*N]
+	// 2.) INCREASE the for loop in the main() to initialise x properly.
+
 	//mono_write_16Bit(symmetrical_circ_doublememory_FIR());
 }
 
