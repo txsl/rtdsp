@@ -162,9 +162,62 @@ double basic_circ_FIR(void)
 		output += x[circIndex+i-N]*b[i];
 	}
 	
-	circIndex++;
-	if (circIndex == N) { circIndex=0; }
+	circIndex--;
+	if (circIndex < 0) { circIndex=N-1; }
 	return output;
+}
+
+
+double symmetrical_circ_FIR_even(void)
+{
+	x[circIndex] = mono_read_16Bit();
+	output = 0.0;
+
+	// This is assuming out filter is EVEN
+	// If our index is in the lower half of the input buffer, we need to make sure that the x[index-1] doesn't go below -1.
+	if (circIndex < (N/2))
+	{
+		// here we make sure x[index-1-i] stays above 0
+		for( i=0; i<circIndex; i++ ) {
+			output += b[i] * (x[circIndex+i] + x[circIndex - 1 - i]);
+		}
+		for (i=circIndex; i<N/2; i++){
+			output += b[i] * (x[circIndex+i] + x[circIndex - 1 - i + N]);
+		}
+	}
+	else
+	{
+		// Here we make sure that x[index+i] stays below N-1
+		for( i=0; i<N-circIndex; i++ ) {
+			output += b[i] * (x[circIndex+i] + x[circIndex - 1 - i]);
+		}
+		for (i=N-circIndex; i<N/2; i++){
+			output += b[i] * (x[circIndex + i - N] + x[circIndex - 1 - i + N]);
+		}
+	}
+	
+	//decrement index to make sure that the buffers are kept in order
+	circIndex--;
+	if (circIndex < 0) { circIndex=N-1; }
+	return output;
+}
+
+double symmetrical_circ_doublememory_FIR(void)
+{
+	x[circIndex] = mono_read_16Bit();
+	x[circIndex2] = x[circIndex];
+	output = 0.0;
+
+	for (i=0; i<N/2; i++)
+	{
+		output += b[i] * ( x[circIndex+i] + x[circIndex2-1-i]);
+	}
+
+	circIndex --;
+	if (circIndex < 0) { circIndex=N-1; }
+	circIndex2 = circIndex + N
+	return output;
+
 }
 
 void ISR_AIC(void)
