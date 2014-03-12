@@ -3,13 +3,14 @@ rs = 48;          % Stopband ripple
 fs = 8000;        % Sampling frequency
 f = [240 440 2000 2300];    % Cutoff frequencies
 a = [0 1 0];        % Desired amplitudes
-dev = [10^(-rs/20) (10^(rp/20)-1)/(10^(rp/20)+1)  10^(-rs/20)]; % Compute deviations
-
-n_extra = 0; % Additional terms to add before coefficient calculation
+% Compute deviations
+dev = [10^(-rs/20) (10^(rp/20)-1)/(10^(rp/20)+1)  10^(-rs/20)];
 
 [n,fo,ao,w] = firpmord(f,a,dev,fs);
-n + n_extra
-b = firpm(n + n_extra,fo,ao,w)
+
+b = firpm(n+10,fo,ao,w);
+
+save('RTDSP/coeffs.txt', 'b','-ascii', '-double', '-tabs')
 
 out = 'double b[] = {';
 
@@ -21,11 +22,10 @@ for i=1:length(b)
     end
     
 end
-out = [out, '};'];
+out = [out, '};']
 
 f = fopen('RTDSP/coeffs.txt', 'w+');
-fprintf(f, out);
-fclose(f);
+fprintf(f, 
 
-freqz(b,1,1024,fs);
-title('Lowpass Filter Designed to Specifications');
+% freqz(b,1,1024,fs);
+% title('Lowpass Filter Designed to Specifications');
