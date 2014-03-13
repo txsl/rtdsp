@@ -8,10 +8,10 @@
 -u _GBL_setPLLto225MHz
 GBL_USERINITFXN = _GBL_setPLLto225MHz;
 
--u MEM_NULL
-MEM_SEGZERO = MEM_NULL;
--u MEM_NULL
-MEM_MALLOCSEG = MEM_NULL;
+-u IRAM
+MEM_SEGZERO = IRAM;
+-u IRAM
+MEM_MALLOCSEG = IRAM;
 
 -u CLK_F_getshtime
 CLK_TIMEFXN = CLK_F_getshtime;
@@ -287,6 +287,10 @@ SECTIONS {
             _HWI_STKBOTTOM = GBL_stackbeg + 0x400 - 8;
             _HWI_STKTOP = GBL_stackbeg;
         } > IRAM
+
+        .IRAM$heap: {
+            . += 0x8000;
+        } RUN_START(IRAM$B), RUN_START(_IRAM_base), RUN_SIZE(IRAM$L), RUN_SIZE(_IRAM_length) > IRAM
 
 }
 

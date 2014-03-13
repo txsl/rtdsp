@@ -5,7 +5,7 @@
 ;; INPUT dsp_bios_.cdb
 
 ;; CONFIGURATION/VERSION INFORMATION
-	.asg "Fri Mar 07 21:18:11 2014", VERS$DATE
+	.asg "Thu Mar 13 23:21:31 2014", VERS$DATE
 
 ;; PROLOGUE
 	.include dsp_bios_cfg.h62
@@ -338,9 +338,9 @@ HOOK$SETOF          .set 00H
 	GBL_config  _ROM, _PROCID, _CLKIN, _FREQ, _DSPTYPE, _DSPSUBTYPE, _CLKTYPE, _BIGENDIAN, _USERINIT, _USERINITFXN, _ENABLEINST, _CACHE, _L2CONFIGURE, _L2MODE, _L2PRIORITY, _L2MARMASK, _SUPPORTCSL, _TRCMASKVALUE, _CALLCSLCFGINIT, _C641XL2PRIORITY, _L2MARMASK1, _L2MARMASK2, _L2MARMASK3, _L2MARMASK4, _L2MARMASK5, _L2CONFIGALLOC, _L2ALLOC
 
 ;; ======== MEM_config ========
-	.asg 00H, _gNumHeap
-	.asg MEM_NULL, _SEGZERO
-	.asg MEM_NULL, _MALLOCSEG
+	.asg 01H, _gNumHeap
+	.asg IRAM, _SEGZERO
+	.asg IRAM, _MALLOCSEG
 	.asg 00H, _USEMPC
 	MEM_config  _gNumHeap, _SEGZERO, _MALLOCSEG, _USEMPC
 
@@ -518,7 +518,7 @@ HOOK$SETOF          .set 00H
 	.global SDRAM
 	.asg 0800000H, _len
 	.asg 00H, _iAllocHeap
-	.asg MEM_NULL, _iSegZero
+	.asg IRAM, _iSegZero
 	.asg segment_name, _iHeapId
 	MEM_Obj 1, SDRAM, 0, _len, _iAllocHeap, _iSegZero, _iHeapId
 
@@ -528,8 +528,8 @@ HOOK$SETOF          .set 00H
 ;; MEM_Obj IRAM (len, iAllocHeap, iSegZero, iHeapId)
 	.global IRAM
 	.asg 040000H, _len
-	.asg 00H, _iAllocHeap
-	.asg MEM_NULL, _iSegZero
+	.asg 01H, _iAllocHeap
+	.asg IRAM, _iSegZero
 	.asg segment_name, _iHeapId
 	MEM_Obj 1, IRAM, 0, _len, _iAllocHeap, _iSegZero, _iHeapId
 

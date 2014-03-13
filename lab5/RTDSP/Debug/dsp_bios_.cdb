@@ -75,7 +75,7 @@ type GlobalStatus {
         prop Visible :: 0
         prop Writable :: 1
     }
-    global DATE :: "Fri Mar 07 21:18:11 2014" { 
+    global DATE :: "Thu Mar 13 23:21:31 2014" { 
         prop Type :: "{21455EA3-B96A-11cf-9BFE-0000C0AC14C7}"
         prop Visible :: 0
         prop Writable :: 0
@@ -1648,7 +1648,7 @@ type MEM {
         prop NoGen :: 1
         prop TabName :: "BIOS Data"
     }
-    global NOHEAPS :: 1 { 
+    global NOHEAPS :: 0 { 
         prop Type :: "{21455EA0-B96A-11cf-9BFE-0000C0AC14C7}"
         prop Label :: "No Dynamic Memory Heaps"
         prop JSName :: "NOMEMORYHEAPS"
@@ -1658,7 +1658,7 @@ type MEM {
         prop Set :: (if ($1) {self.SEGZERO.iReqHeapCount--, self.SEGZERO = MEM_NULL, self.MALLOCSEG.iReqHeapCount--, self.MALLOCSEG = MEM_NULL, TSK.STACKSEG.iReqHeapCount--, TSK.STACKSEG = MEM_NULL, scan ($i; MEM) {if ($i.iAllocHeap && $i != MEM_NULL) {$i.iAllocHeap = 0, $i.iHeapSize = 0} }} , self.NOHEAPS = $1, "ok")
         prop PropSetOkUserMsg :: if (MEM.NOHEAPS == 1) {"Currently specified heaps no longer valid"} else {"Please reconfigure heaps under individual mem segments"}
     }
-    global SEGZERO :: MEM_NULL { 
+    global SEGZERO :: IRAM { 
         prop Type :: "{7BA2DA00-5A53-11d0-9BFE-0000C0AC14C7}"
         prop MemberType :: MEM
         prop MemberTest :: (self.dataNullMember($1) && $1.iAllocHeap)
@@ -1669,7 +1669,7 @@ type MEM {
         prop NoGen :: 0
         prop Set :: (if (self.SEGZERO.iReqHeapCount > 0) {self.SEGZERO.iReqHeapCount--} , self.SEGZERO = $1, self.SEGZERO.iReqHeapCount++, "ok")
     }
-    global MALLOCSEG :: MEM_NULL { 
+    global MALLOCSEG :: IRAM { 
         prop Type :: "{7BA2DA00-5A53-11d0-9BFE-0000C0AC14C7}"
         prop MemberType :: MEM
         prop MemberTest :: (self.dataNullMember($1) && $1.iAllocHeap)
@@ -2073,7 +2073,7 @@ object MEM_NULL :: MEM {
     param iHeapSize :: 32768
     param iUserHeapId :: 0
     param iHeapId :: @segment_name
-    param iReqHeapCount :: 1
+    param iReqHeapCount :: 0
     param space :: "data"
     param dynamicLoading :: 0
     param iIsModifiable :: 1
@@ -8750,11 +8750,11 @@ object IRAM :: MEM {
     param iDelMsg :: "ok"
     param base :: 0
     param len :: 262144
-    param iAllocHeap :: 0
+    param iAllocHeap :: 1
     param iHeapSize :: 32768
     param iUserHeapId :: 0
     param iHeapId :: @segment_name
-    param iReqHeapCount :: 0
+    param iReqHeapCount :: 2
     param space :: "code/data"
     param dynamicLoading :: 0
     param iIsModifiable :: 1

@@ -68,12 +68,15 @@ int i;
 int circIndex = 0;
 int circIndex2 = N; //used for double memory circular IIR - see notes
 
+double x_1;
+double y_1;
+
 // Codec handle:- a variable used to identify audio interface  
 DSK6713_AIC23_CodecHandle H_Codec;
 
  /**************** Function prototypes **********************/
 void init_hardware(void);     
-void init_HWI(void);                   
+void init_HWI(void);            
 /********************* Main routine *************************/
 void main(){
   // initialize board and the audio port
@@ -132,9 +135,16 @@ void init_HWI(void)
 } 
 
 /******************** WRITE YOUR INTERRUPT SERVICE ROUTINE HERE***********************/  
-double low_pas_IIR(double input)
+double low_pass_IIR(void)
 {
+	int x = mono_read_16Bit();
+	int output;
 	
+	output = x/17 + x_1/17 + (15/17)*y_1;
+	y_1 = output;
+	x_1 = x;
+	
+	return output;
 }
 
 double non_circ_FIR(void)
@@ -247,7 +257,7 @@ double symmetrical_circ_doublememory_FIR(void)
 
 void ISR_AIC(void)
 {
-	mono_write_16Bit(non_circ_FIR());
+	mono_write_16Bit(low_pass_IIR());
 	//mono_write_16Bit(basic_circ_FIR());
 	//mono_write_16Bit(symmetrical_circ_FIR_even());
 

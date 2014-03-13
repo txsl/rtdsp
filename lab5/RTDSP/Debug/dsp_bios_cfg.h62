@@ -107,7 +107,7 @@ GBL_L2MARMASK5      .set 00H
 GBL_L2CONFIGALLOC   .set 00H
 GBL_L2ALLOC         .set 02226H
 MEM$                .set 1
-MEM_gNumHeap        .set 00H
+MEM_gNumHeap        .set 01H
 MEM_USEMPC          .set 00H
 OBJ$                .set 0
 BUF$                .set 0
