@@ -8,9 +8,10 @@ dev = [10^(-rs/20) (10^(rp/20)-1)/(10^(rp/20)+1)  10^(-rs/20)]; % Compute deviat
 n_extra = 0; % Additional terms to add before coefficient calculation
 
 [n,fo,ao,w] = firpmord(f,a,dev,fs);
-n + n_extra
-b = firpm(n + n_extra,fo,ao,w)
+n + n_extra;
+b = firpm(n + n_extra,fo,ao,w);
 
+%Generate the file to be #included in the embedded C code
 out = 'double b[] = {';
 
 for i=1:length(b)
@@ -23,6 +24,7 @@ for i=1:length(b)
 end
 out = [out, '};'];
 
+%Write it to a file
 f = fopen('RTDSP/coeffs.txt', 'w+');
 fprintf(f, out);
 fclose(f);
