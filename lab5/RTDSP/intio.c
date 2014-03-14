@@ -68,8 +68,8 @@ double output;
 int i;
 int index=0;
 
-double x_1;
-double y_1;
+double x_1 = 0;
+double y_1 = 0;
 
 // Codec handle:- a variable used to identify audio interface  
 DSK6713_AIC23_CodecHandle H_Codec;
@@ -138,9 +138,9 @@ void init_HWI(void)
 /************** WRITE YOUR INTERRUPT SERVICE ROUTINE HERE*******************/  
 double low_pass_IIR(double input)
 {
-	y_1 = input/17.0 + x_1/17.0 + (15/17)*y_1;
+	y_1 = input/17.0 + x_1/17.0 + (15.0/17.0)*y_1;
 	x_1 = input;
-	
+	//y_2 = y_1;
 	return y_1;
 }
 
@@ -203,9 +203,10 @@ double IIR_2_circ() {
 
 void ISR_AIC(void)
 {
+	mono_write_16Bit(mono_read_16Bit());
 	//mono_write_16Bit(low_pass_IIR(mono_read_16Bit()));
 	// mono_write_16Bit(IIR_2_noncirc());
-	mono_write_16Bit(IIR_2_circ());
+	//mono_write_16Bit(IIR_2_circ());
 	//mono_write_16Bit(low_pass_IIR(mono_read_16Bit()));
 	
 }
