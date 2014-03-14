@@ -138,10 +138,10 @@ void init_HWI(void)
 /************** WRITE YOUR INTERRUPT SERVICE ROUTINE HERE*******************/  
 double low_pass_IIR(double input)
 {
-	y_1 = input/17.0 + x_1/17.0 + (15.0/17.0)*y_1;
-	x_1 = input;
-	//y_2 = y_1;
-	return y_1;
+	// The line below implements the difference equation.
+	y_1 = input/17.0 + x_1/17.0 + (15.0/17.0)*y_1; // y_1 (the previous value) is overwritten (to be memory efficient)
+	x_1 = input; // Set x[n-1] as the current input value, ready for the next function call.
+	return y_1; 
 }
 
 double IIR_2_noncirc(){
@@ -218,15 +218,10 @@ double IIR_2_trans(){
 
 void ISR_AIC(void)
 {
-<<<<<<< HEAD
 	mono_write_16Bit(mono_read_16Bit());
 	//mono_write_16Bit(low_pass_IIR(mono_read_16Bit()));
 	// mono_write_16Bit(IIR_2_noncirc());
 	//mono_write_16Bit(IIR_2_circ());
-	//mono_write_16Bit(low_pass_IIR(mono_read_16Bit()));
-	
-=======
-	mono_write_16Bit(IIR_2_noncirc());
->>>>>>> 61bbc92e200af0ce1a6bd3ac749148dfb1c9c2bb
+	//mono_write_16Bit(low_pass_IIR(mono_read_16Bit()));	
 }
 
