@@ -32,7 +32,7 @@ for i=1:length(b)
 end
 out = [out, '};'];
 
-out = [out, '\n', '#define ORDER ', sprintf('%d', ord)];
+out = [out, '\n', '#define ORDER ', sprintf('%d', ord), '\n'];
 
 %Write it to a file
 f = fopen('RTDSP/coeffs.txt', 'w+');
