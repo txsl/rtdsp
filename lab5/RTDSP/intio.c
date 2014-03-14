@@ -98,6 +98,7 @@ void init_hardware()
 	for (i = 0; i<N; i++) // for the double-memory implementation, change to i<2N
 	{
 		x[i] = 0.0;
+		v[i] = 0.0;
 	}
 	
     // Initialize the board support library, must be called first 
@@ -143,40 +144,7 @@ double low_pass_IIR(double input)
 	return y_1;
 }
 
-double IIR_2_noncirc(double input){
-	//this function fulfils IIR Direct form ii
-	//filter - this version does not implement a circular buffer //a possible efficiency tweak
-	//use:reads global variable sample and returns filtered value v[0]=sample; //write input to v[0]
-	output = 0.0; //reset output to accumulate result
-	v[0] = input;
-	//loop for all values of v to accumulate them to output
-	for (i=N-1;i>0;i--){
-		v[0] -= a[i]*v[i]; //accumulate a coefficients
-		output += b[i]*v[i]; //accumulate to output
-		v[i] = v[i-1]; //shift v[i] data down to represent the delay elements //in a IIR Direct Form 2 filter
-	}
-	output += b[0]*v[0]; //write final values to output return output; //return filtered value
-	return output;
-}
 
-double IIR_2_circ() {
-	output = 0.0;
-	v[0] = sample;
-
-	for (i=N; i>N-index; i--)
-	{
-		v[index] -= a[i] * v[index + i - N]; //accumulate a coefficients
-		output   += b[i] * v[index + i - N]; //accumulate to output
-	}
-
-	for (i=N-index; i>0; i--)
-	{
-		v[index] -= a[i] * v[index + i]; //accumulate a coefficients
-		output   += b[i] * v[index + i]; //accumulate to output
-	}
-
-	return output;
-}
 
 
 double IIR_2_trans(){
@@ -196,11 +164,48 @@ double IIR_2_trans(){
 	return output; //return filtered value
 }
 
+double IIR_2_noncirc(){
+	//this function fulfils IIR Direct form ii
+	//filter - this version does not implement a circular buffer //a possible efficiency tweak
+	//use:reads global variable sample and returns filtered value v[0]=sample; //write input to v[0]
+	output = 0.0; //reset output to accumulate result
+	v[0] = mono_read_16Bit();
+	//loop for all values of v to accumulate them to output
+	for (i=N-1;i>0;i--){
+		v[0] -= a[i]*v[i]; //accumulate a coefficients
+		output += b[i]*v[i]; //accumulate to output
+		v[i] = v[i-1]; //shift v[i] data down to represent the delay elements //in a IIR Direct Form 2 filter
+	}
+	output += b[0]*v[0]; //write final values to output return output; //return filtered value
+	return output;
+}
+
+double IIR_2_circ() {
+	output = 0.0;
+	v[index] = mono_read_16Bit();
+
+	for (i=N-1; i>=N-index; i--)
+	{
+		v[index] -= a[i] * v[index + i - N]; //accumulate a coefficients
+		output   += b[i] * v[index + i - N]; //accumulate to output
+	}
+
+	for (i=N-index-1; i>=0; i--)
+	{
+		v[index] -= a[i] * v[index + i]; //accumulate a coefficients
+		output   += b[i] * v[index + i]; //accumulate to output
+	}
+	
+	index--;
+	if (index < 0) { index = N-1; }
+	return output;
+}
 
 void ISR_AIC(void)
 {
 	//mono_write_16Bit(low_pass_IIR(mono_read_16Bit()));
-	mono_write_16Bit(IIR_2_noncirc(mono_read_16Bit()));
+	// mono_write_16Bit(IIR_2_noncirc());
+	mono_write_16Bit(IIR_2_circ());
 	//mono_write_16Bit(low_pass_IIR(mono_read_16Bit()));
 	
 }
