@@ -4,9 +4,15 @@ rs = 25;          % Stopband ripple
 fs = 8000;        % Sampling frequency
 pb = [280 470];
 
-[a,b] = ellip(ord/2, rp, rs, pb/(fs/2));
+%divide by two as the ellip function's first parameter is doubled
+[b,a] = ellip(ord/2, rp, rs, pb/(fs/2));
+figure(1)
+%plot the fequency spectrum
+freqz(b,a,2000)
+figure(2)
+%plot z plane
+zplane(b,a)
 
-freqz(a, b,10)
 
 out = 'double a[] = {';
 
