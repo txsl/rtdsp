@@ -60,9 +60,9 @@ DSK6713_AIC23_Config Config = { \
 			 /*****************************************/
 };
 
-double x[N];
-double y[N];
-double v[N];
+double x[ORDER+1];
+double y[ORDER+1];
+double d[ORDER+1];
 double sample;
 double output;
 int i;
@@ -95,10 +95,10 @@ void main(){
 void init_hardware()
 {
 	// We initialise our input buffer here to make sure that it is wiped.
-	for (i = 0; i<N; i++) // for the double-memory implementation, change to i<2N
+	for (i = 0; i<=ORDER; i++) // for the double-memory implementation, change to i<2N
 	{
 		x[i] = 0.0;
-		v[i] = 0.0;
+		d[i] = 0.0;
 	}
 	
     // Initialize the board support library, must be called first 
@@ -144,69 +144,80 @@ double low_pass_IIR(double input)
 	return y_1;
 }
 
-
-
-
-double IIR_2_trans(){
-	//this function reads the global sample variable and returns
-	//a filtered value(the output)
-	//this function is based on equations derived from a
-	//IIR Direct form II transposed filter.
-	output = v[0] + b[0]*sample; //calculate output based on buffer data
-	//loop to complete each iteration of v[n]=v[n-1]+b_1 x[n-1]-a_1 y[n]
-	//to populate buffer
-	for(i = 0;i<N-1;i++){
-		// add new weighted inputs and outputs to previous buffer value v[n+1]
-		v[i] = v[i+1] + b[i+1]*sample - a[i+1]*output;
-	}
-	//calculate first value of v which does not rely on previous versions
-	v[N-2] = b[N-1]*sample - a[N-1]*output;
-	return output; //return filtered value
-}
-
 double IIR_2_noncirc(){
-	//this function fulfils IIR Direct form ii
-	//filter - this version does not implement a circular buffer //a possible efficiency tweak
-	//use:reads global variable sample and returns filtered value v[0]=sample; //write input to v[0]
-	output = 0.0; //reset output to accumulate result
-	v[0] = mono_read_16Bit();
-	//loop for all values of v to accumulate them to output
-	for (i=N-1;i>0;i--){
-		v[0] -= a[i]*v[i]; //accumulate a coefficients
-		output += b[i]*v[i]; //accumulate to output
-		v[i] = v[i-1]; //shift v[i] data down to represent the delay elements //in a IIR Direct Form 2 filter
+	// implementing the basic IIR II filter in a non-circular manner
+	// We first set output to 0, and read in the sample to the first block (Delay = 0)
+	output = 0.0;
+	d[0] = mono_read_16Bit();
+	
+	for (i=ORDER;i>0;i--){
+		// We now go through each order of the filter
+		// accumulate all delay items to d[0]
+		d[0] -= a[i]*d[i];
+		
+		// accumulate all delay items to output y_0
+		output += b[i]*d[i];
+		
+		// delay evey item
+		d[i] = d[i-1]; 
 	}
-	output += b[0]*v[0]; //write final values to output return output; //return filtered value
+	
+	//add the final item, which doesn't exist for a[0]
+	output += b[0]*d[0];
+	
 	return output;
 }
 
 double IIR_2_circ() {
+	// very similar to above, but we implement the circular buffer
+	// to remove the above d[i] = d[i-1]
+	
 	output = 0.0;
-	v[index] = mono_read_16Bit();
-
-	for (i=N-1; i>=N-index; i--)
+	d[index] = mono_read_16Bit();
+	
+	// do this only while index
+	for (i=ORDER; i>ORDER-index; i--)
 	{
-		v[index] -= a[i] * v[index + i - N]; //accumulate a coefficients
-		output   += b[i] * v[index + i - N]; //accumulate to output
+		// accumulate all delay items to d[0], avoiding overflow by doing -N
+		d[index] -= a[i] * d[index + i - ORDER - 1];
+		// accumulate all delay items to output y_0, avoiding overflow by doing -N
+		output   += b[i] * d[index + i - ORDER - 1];
 	}
 
-	for (i=N-index-1; i>=0; i--)
+	for (i=ORDER-index; i>=0; i--)
 	{
-		v[index] -= a[i] * v[index + i]; //accumulate a coefficients
-		output   += b[i] * v[index + i]; //accumulate to output
+		// accumulate all delay items to d[0]
+		d[index] -= a[i] * d[index + i];
+		// accumulate all delay items to output y_0
+		output   += b[i] * d[index + i];
 	}
 	
+	//update the index - we decrement so to keep the items in d[] ordered
 	index--;
-	if (index < 0) { index = N-1; }
+	if (index < 0) { index = ORDER; }
+	
 	return output;
+}
+
+double IIR_2_trans(){
+	// implement the IIR filter using the transposed form.
+	// we save to sample so we can use the item more than once.
+	sample = mono_read_16Bit();
+	
+	// set our current output using previously calculated values.
+	output = b[0]*sample + d[0];
+
+	// calculate new values of d
+	for(i = 0;i<ORDER;i++){
+		d[i] = b[i+1]*sample - a[i+1]*output + d[i+1];
+	}
+	// created the highest order D value which depends on inputs and outputs
+	d[ORDER-1] = b[ORDER]*sample - a[ORDER]*output; // remove the d[i+1] from here
+	return output; //return filtered value
 }
 
 void ISR_AIC(void)
 {
-	//mono_write_16Bit(low_pass_IIR(mono_read_16Bit()));
-	// mono_write_16Bit(IIR_2_noncirc());
-	mono_write_16Bit(IIR_2_circ());
-	//mono_write_16Bit(low_pass_IIR(mono_read_16Bit()));
-	
+	mono_write_16Bit(IIR_2_noncirc());
 }
 
