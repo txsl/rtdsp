@@ -218,10 +218,7 @@ double IIR_2_trans(){
 
 void ISR_AIC(void)
 {
-	mono_write_16Bit(mono_read_16Bit());
-	//mono_write_16Bit(low_pass_IIR(mono_read_16Bit()));
-	// mono_write_16Bit(IIR_2_noncirc());
-	//mono_write_16Bit(IIR_2_circ());
-	//mono_write_16Bit(low_pass_IIR(mono_read_16Bit()));	
+	// mono_write_16Bit(mono_read_16Bit());
+	mono_write_16Bit(low_pass_IIR(mono_read_16Bit()));	
 }
 
