@@ -72,13 +72,13 @@ DSK6713_AIC23_CodecHandle H_Codec;
 
 #define BUFLEN 128  /* Frame buffer length must be even for real fft */
 
-complex C[BUFLEN];
-
 
 /* Pointers to data buffers */                        
 float *input;
 float *intermediate;
 float *output;
+complex* dfttemp;
+complex *C;
 float mag[BUFLEN];
 volatile int index = 0; 
  
@@ -88,7 +88,9 @@ void init_hardware(void);
 void init_HWI(void);   
 void ISR_AIC(void);
 void init_arrays(void);
-void wait_buffer(void); 
+void wait_buffer(void);
+void mygreatdft(int length, complex* input);
+void mygreatidft(int length, complex* input);
                        
 /********************************** Main routine ************************************/
 void main()
@@ -152,16 +154,12 @@ void init_HWI(void)
 /************************** Allocate memory for arrays *******************************/        
 void init_arrays(void)
 {
-	int i;
-	
 	input        = (float *) calloc(BUFLEN, sizeof(float)); /* Input array */
     output       = (float *) calloc(BUFLEN, sizeof(float)); /* Output array */
     intermediate = (float *) calloc(BUFLEN, sizeof(float)); /* Array for processing*/
+    C			 = (complex *) calloc(BUFLEN, sizeof(complex));
+    dfttemp		 = (complex *) calloc(BUFLEN, sizeof(complex));
     
-    for (i = 0; i < BUFLEN; i++)
-	{
-		mag[i] = 0;
-	}
 }
 
 /*************************** INTERRUPT SERVICE ROUTINE  ******************************/
@@ -206,17 +204,18 @@ void wait_buffer(void)
 
 	for (i=0; i<BUFLEN; i++)
 	{
-		C[i] = cmplx(intermediate[i], 0);
+		C[i].r = intermediate[i];
+		C[i].i = 0;
 	}
 	
-	fft(BUFLEN, C);
+	mygreatdft(BUFLEN, C);
 	
 	for (i=0; i<BUFLEN; i++)
 	{
 		mag[i] = cabs(C[i]);
 	}
 	
-	ifft(BUFLEN, C);
+	mygreatidft(BUFLEN, C);
 	
 	for (i=0; i<BUFLEN; i++)
 	{
@@ -230,9 +229,44 @@ void wait_buffer(void)
 	while(!index);
 }        
 
-void dft(int length, complex* input)
+void mygreatdft(int length, complex* input)
 {
+	int k, n;
 	
+	for (k=0; k<length; k++)
+	{
+		dfttemp[k] = cmplx(0,0);
+		//for each output
+		for (n = 0; n < length; n++)
+		{
+			dfttemp[k] = cadd( dfttemp[k], cmul(input[n], cexp(cmplx(0, -2 * PI * n * k / length)) ) );
+		}
+	}
+	for (n=0; n<length; n++)
+	{
+		input[n] = dfttemp[n];
+	}
+}
+
+void mygreatidft(int length, complex* input)
+{
+	int k, n;
+	
+	for (n=0; n<length; n++)
+	{
+		dfttemp[n] = cmplx(0,0);
+		//for each output
+		for (k = 0; k < length; k++)
+		{
+			dfttemp[n] = cadd( dfttemp[n], cmul(input[k], cexp(cmplx(0, 2 * PI * n * k / length)) ) );
+		}
+		
+		dfttemp[n] = rdiv(dfttemp[n], length);
+	}
+	for (n=0; n<length; n++)
+	{
+		input[n] = dfttemp[n];
+	}
 }
 
 
