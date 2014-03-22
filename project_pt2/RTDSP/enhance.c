@@ -88,6 +88,8 @@ float cpufrac; 						/* Fraction of CPU time used */
 volatile int io_ptr=0;              /* Input/ouput pointer for circular buffers */
 volatile int frame_ptr=0;           /* Frame pointer */
 
+complex *inframe_c;
+
  /******************************* Function prototypes *******************************/
 void init_hardware(void);    	/* Initialize codec */ 
 void init_HWI(void);            /* Initialize hardware interrupts */
@@ -108,6 +110,8 @@ void main()
     outframe	= (float *) calloc(FFTLEN, sizeof(float));	/* Array for processing*/
     inwin		= (float *) calloc(FFTLEN, sizeof(float));	/* Input window */
     outwin		= (float *) calloc(FFTLEN, sizeof(float));	/* Output window */
+    
+    inframe_c = (complex *) calloc(FFTLEN, sizeof(complex));
 	
 	/* initialize board and the audio port */
   	init_hardware();
@@ -165,7 +169,7 @@ void init_HWI(void)
 	IRQ_globalEnable();				// Globally enables interrupts
 
 }
-        
+      
 /******************************** process_frame() ***********************************/  
 void process_frame(void)
 {
@@ -174,7 +178,7 @@ void process_frame(void)
 
 	/* work out fraction of available CPU time used by algorithm */    
 	cpufrac = ((float) (io_ptr & (FRAMEINC - 1)))/FRAMEINC;  
-		
+	
 	/* wait until io_ptr is at the start of the current frame */ 	
 	while((io_ptr/FRAMEINC) != frame_ptr); 
 	
@@ -195,16 +199,30 @@ void process_frame(void)
 	} 
 	
 	/************************* DO PROCESSING OF FRAME  HERE **************************/
+
+	for (k=0;k<FFTLEN;k++)
+	{                           
+		inframe_c[k].r = inframe[k]; 
+		inframe_c[k].i = 0;
+	}
+
+	fft(FFTLEN, inframe_c);
 	
-	
+	ifft(FFTLEN, inframe_c);
+									
+    for (k=0;k<FFTLEN;k++)
+	{                           
+		outframe[k] = inframe_c[k].r;/* copy input straight into output */ 
+	} 
+
 	/* please add your code, at the moment the code simply copies the input to the 
 	ouptut with no processing */	 
 							      	
-										
-    for (k=0;k<FFTLEN;k++)
-	{                           
-		outframe[k] = inframe[k];/* copy input straight into output */ 
-	} 
+//										
+//    for (k=0;k<FFTLEN;k++)
+//	{                           
+//		outframe[k] = inframe[k];/* copy input straight into output */ 
+//	} 
 	
 	/********************************************************************************/
 	

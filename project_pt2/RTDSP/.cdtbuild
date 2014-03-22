@@ -25,6 +25,8 @@
 <option id="com.ti.ccstudio.buildDefinitions.C6000_6.1.compilerID.INCLUDE_PATH.1583446158" superClass="com.ti.ccstudio.buildDefinitions.C6000_6.1.compilerID.INCLUDE_PATH" valueType="includePath">
 <listOptionValue builtIn="false" value="&quot;${CG_TOOL_ROOT}/include&quot;"/>
 <listOptionValue builtIn="false" value="&quot;${CCS_INSTALL_ROOT}\C6000\dsk6713\include&quot;"/>
+<listOptionValue builtIn="false" value="&quot;${CCS_INSTALL_ROOT}\C6000\dsk6713\FFT\complex.obj&quot;"/>
+<listOptionValue builtIn="false" value="&quot;${CCS_INSTALL_ROOT}\C6000\dsk6713\FFT\fft_functions.obj&quot;"/>
 <listOptionValue builtIn="false" value="&quot;${CCS_INSTALL_ROOT}\C6000\csl\include&quot;"/>
 <listOptionValue builtIn="false" value="&quot;${PROJECT_BUILD_DIR}&quot;"/>
 <listOptionValue builtIn="false" value="&quot;${BIOS_INCLUDE_DIR}&quot;"/>

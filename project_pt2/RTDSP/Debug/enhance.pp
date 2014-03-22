@@ -2,7 +2,7 @@
 enhance.obj: ../enhance.c
 enhance.obj: C:/EEE/CCStudio4.1/ccsv4/tools/compiler/c6000/include/stdlib.h
 enhance.obj: C:/EEE/CCStudio4.1/ccsv4/tools/compiler/c6000/include/linkage.h
-enhance.obj: L:/rt-dsp/project_pt2/RTDSP/Debug/dsp_bios_cfg.h
+enhance.obj: L:/RTDSPlab/project_pt2/RTDSP/Debug/dsp_bios_cfg.h
 enhance.obj: C:/EEE/CCStudio4.1/bios_5_41_02_14/packages/ti/bios/include/std.h
 enhance.obj: C:/EEE/CCStudio4.1/bios_5_41_02_14/packages/ti/bios/include/tistdtypes.h
 enhance.obj: C:/EEE/CCStudio4.1/bios_5_41_02_14/packages/ti/bios/include/hst.h
