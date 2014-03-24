@@ -57,7 +57,9 @@
 #define TFRAME FRAMEINC/FSAMP       /* time between calculation of each frame */
 
 #define FRAMES_PER_WINDOW 312
-#define WINDOWS 5
+#define WINDOWS 4
+#define LAMBDA 0.1
+#define ALPHA 20
 
 /******************************* Global declarations ********************************/
 
@@ -192,9 +194,17 @@ void init_HWI(void)
 /******************************** process_frame() ***********************************/  
 void process_frame(void)
 {
-	int k, m; 
-	int io_ptr0;  
-	
+	int i, k, m; 
+	int io_ptr0;
+	struct transform g, min_noise;
+	float noise_val;
+
+	// We always use FLT_MAX because we are looking for the minimum value, so we start at the highest possible value as a default.
+	for(k=0;k<FFTLEN;k++) // Set g ready for use later on
+	{
+		g.bin[k] = FLT_MAX;
+		min_noise.bin[k] = FLT_MAX;
+	}
 
 	/* work out fraction of available CPU time used by algorithm */    
 	cpufrac = ((float) (io_ptr & (FRAMEINC - 1)))/FRAMEINC;  
@@ -236,17 +246,45 @@ void process_frame(void)
 		fftbin[k] = cabs(inframe_c[k]);
 	}
 	
-	// Go through all frequency bins in turn, and find the minimum value (either the existing one, or from this )
- 	for(k=0;k<FFTLEN;k++)
+	// Go through all frequency bins in turn, and find the minimum value. This is the basic spectral subtraction routine.
+ 	for (k=0;k<FFTLEN;k++)
 	{
+		// Update the current 2.5s window minimum value if the current FFT sample is lower in amplitude than the one stored
 		if (fftbin[k] < min_window[winstage].bin[k])
 			min_window[winstage].bin[k] = fftbin[k];
+		
+		// We iterate through all 2.5s windows to find the minimum noise amongst them, and set it as the variable min_noise
+		for (i=0;i<WINDOWS;i++)
+		{
+			if (min_noise.bin[k] > min_window[i].bin[k])
+				min_noise.bin[k] = min_window[i].bin[k];
+		}
+
+		// Calculate the estimated noise: 1 - (mag(min noise) / mag(fft of current sample))
+		noise_val = 1 - ((ALPHA * min_noise.bin[k]) / fftbin[k]);
+		// if (noise_val > LAMBDA)
+		// 	g.bin[k] = noise_val;
+		// else
+		// 	g.bin[k] = LAMBDA
+
+		// We either take the estimated noise, or if our LAMBDA value is bigger, we use that instead.
+		g.bin[k] = (noise_val > LAMBDA) ? noise_val : LAMBDA;
+	
+		// Multiply the complex FFT (X(w) with our value of G(w))
+		inframe_c[k] = rmul(g.bin[k], inframe_c[k]);
 	}
 	
+	
+	// Now let's comapre the current values to the minimum ones (to calculate g)
+	// for(k=0;k<FFTLEN;k++)
+	// {
+	// 	g.bin[k] = 1 - 
+	// }
+
 	// Move the frame position along one, and if at the end, reset and check if we need to use a different 2.5s window
 	if (frame_position < FRAMES_PER_WINDOW)
 	{
-		frame_position++;
+		frame_position++; // frame_position is only used to tell if we need to move to a new 2.5s interval.
 	}
 	else // We need to do some specicial stuff if we've gone through a 2.5 second segment
 	{
