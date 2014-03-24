@@ -251,7 +251,7 @@ void process_frame(void)
 	else // We need to do some specicial stuff if we've gone through a 2.5 second segment
 	{
 		frame_position = 0; // reset the frame position to 0 for the next window stage
-		if(winstage<WINSIZE) // Either move on to the next 2.5s window
+		if(winstage<WINDOWS) // Either move on to the next 2.5s window
 			winstage++;
 		else				// Or reset it to 0
 			winstage = 0; 
