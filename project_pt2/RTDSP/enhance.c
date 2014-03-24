@@ -56,7 +56,7 @@
 #define PI 3.141592653589793
 #define TFRAME FRAMEINC/FSAMP       /* time between calculation of each frame */
 
-#define WINSIZE 312
+#define FRAMES_PER_WINDOW 312
 #define WINDOWS 5
 
 /******************************* Global declarations ********************************/
@@ -94,7 +94,7 @@ volatile int frame_ptr=0;           /* Frame pointer */
 complex *inframe_c;
 float *fftbin;
 int winstage = 0;
-int winbin = 0;
+int frame_position = 0;
 
 struct transform
 {
@@ -220,44 +220,45 @@ void process_frame(void)
 	
 	/************************* DO PROCESSING OF FRAME  HERE **************************/
 	
+	// Put our samples in the correct (complex) format for the FFT
 	for (k=0;k<FFTLEN;k++)
 	{                           
 		inframe_c[k].r = inframe[k]; 
 		inframe_c[k].i = 0;
 	}
 
+	// Take the FFT of our 256 samples
 	fft(FFTLEN, inframe_c);
 
+	// Since we have no information on phase, we take the absolute value of each frequency bin
 	for (k=0;k<FFTLEN;k++)
 	{
 		fftbin[k] = cabs(inframe_c[k]);
 	}
 	
-	// Go through all frequency bins and find the minimum value
-	for(k=0;k<FFTLEN;k++)
+	// Go through all frequency bins in turn, and find the minimum value (either the existing one, or from this )
+ 	for(k=0;k<FFTLEN;k++)
 	{
 		if (fftbin[k] < min_window[winstage].bin[k])
 			min_window[winstage].bin[k] = fftbin[k];
 	}
 	
 	// Check if we need to use a different 2.5s window
-	if(winstage<WINSIZE)
+
+	winstage = 0;
+	if (frame_position < FRAMES_PER_WINDOW)
 	{
-		winstage++;
+		frame_position++;
 	}
-	else
+	else // We need to do some specicial stuff if we've gone through a 2.5 second segment
 	{
-		winstage = 0;
-		if (winbin < WINDOWS)
-		{
-			winbin++;
-		}
-		else
-		{
-			winbin = 0;
-		}
-			
-		for(k=0;k<FFTLEN;k++)
+		frame_position = 0; // reset the frame position to 0 for the next window stage
+		if(winstage<WINSIZE) // Either move on to the next 2.5s window
+			winstage++;
+		else				// Or reset it to 0
+			winstage = 0; 
+
+		for(k=0;k<FFTLEN;k++) // Then clear the old data away
 		{
 			min_window[winstage].bin[k] = FLT_MAX;
 		}
