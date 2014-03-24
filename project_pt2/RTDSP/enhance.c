@@ -56,6 +56,9 @@
 #define PI 3.141592653589793
 #define TFRAME FRAMEINC/FSAMP       /* time between calculation of each frame */
 
+#define WINSIZE 312
+#define WINDOWS 5
+
 /******************************* Global declarations ********************************/
 
 /* Audio port configuration settings: these values set registers in the AIC23 audio 
@@ -89,6 +92,16 @@ volatile int io_ptr=0;              /* Input/ouput pointer for circular buffers 
 volatile int frame_ptr=0;           /* Frame pointer */
 
 complex *inframe_c;
+float *fftbin;
+int winstage = 0;
+int winbin = 0;
+
+struct transform
+{
+	float bin[FFTLEN];
+};
+
+struct transform min_window[WINDOWS];
 
  /******************************* Function prototypes *******************************/
 void init_hardware(void);    	/* Initialize codec */ 
@@ -101,6 +114,7 @@ void main()
 {      
 
   	int k; // used in various for loops
+  	int i; // also used as a counter
   
 /*  Initialize and zero fill arrays */  
 
@@ -112,6 +126,11 @@ void main()
     outwin		= (float *) calloc(FFTLEN, sizeof(float));	/* Output window */
     
     inframe_c = (complex *) calloc(FFTLEN, sizeof(complex));
+	fftbin = (float *) calloc(FFTLEN, sizeof(float));
+	
+	for(i=0;i<WINDOWS;i++)	
+		for(k=0;k<FFTLEN;k++)
+			min_window[i].bin[k] = FLT_MAX;
 	
 	/* initialize board and the audio port */
   	init_hardware();
@@ -174,7 +193,8 @@ void init_HWI(void)
 void process_frame(void)
 {
 	int k, m; 
-	int io_ptr0;   
+	int io_ptr0;  
+	
 
 	/* work out fraction of available CPU time used by algorithm */    
 	cpufrac = ((float) (io_ptr & (FRAMEINC - 1)))/FRAMEINC;  
@@ -199,7 +219,7 @@ void process_frame(void)
 	} 
 	
 	/************************* DO PROCESSING OF FRAME  HERE **************************/
-
+	
 	for (k=0;k<FFTLEN;k++)
 	{                           
 		inframe_c[k].r = inframe[k]; 
@@ -207,6 +227,41 @@ void process_frame(void)
 	}
 
 	fft(FFTLEN, inframe_c);
+
+	for (k=0;k<FFTLEN;k++)
+	{
+		fftbin[k] = cabs(inframe_c[k]);
+	}
+	
+	// Go through all frequency bins and find the minimum value
+	for(k=0;k<FFTLEN;k++)
+	{
+		if (fftbin[k] < min_window[winstage].bin[k])
+			min_window[winstage].bin[k] = fftbin[k];
+	}
+	
+	// Check if we need to use a different 2.5s window
+	if(winstage<WINSIZE)
+	{
+		winstage++;
+	}
+	else
+	{
+		winstage = 0;
+		if (winbin < WINDOWS)
+		{
+			winbin++;
+		}
+		else
+		{
+			winbin = 0;
+		}
+			
+		for(k=0;k<FFTLEN;k++)
+		{
+			min_window[winstage].bin[k] = FLT_MAX;
+		}
+	}
 	
 	ifft(FFTLEN, inframe_c);
 									
