@@ -243,9 +243,7 @@ void process_frame(void)
 			min_window[winstage].bin[k] = fftbin[k];
 	}
 	
-	// Check if we need to use a different 2.5s window
-
-	winstage = 0;
+	// Move the frame position along one, and if at the end, reset and check if we need to use a different 2.5s window
 	if (frame_position < FRAMES_PER_WINDOW)
 	{
 		frame_position++;
