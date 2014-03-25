@@ -61,6 +61,7 @@
 #define LAMBDA 0.1
 #define ALPHA 20
 #define TIME_CONST .002 // Ie 20ms
+float k_filter;
 
 /******************************* Global declarations ********************************/
 
@@ -119,6 +120,8 @@ void main()
 
   	int k; // used in various for loops
   	int i; // also used as a counter
+  	
+  	k_filter = exp(-TFRAME/TIME_CONST);
   
 /*  Initialize and zero fill arrays */  
 
@@ -135,8 +138,6 @@ void main()
 	for(i=0;i<WINDOWS;i++)	
 		for(k=0;k<FFTLEN;k++)
 			min_window[i].bin[k] = FLT_MAX;
-	
-	float k = exp(-T/TIME_CONST);
 
 	/* initialize board and the audio port */
   	init_hardware();
@@ -253,11 +254,11 @@ void process_frame(void)
 	// Go through all frequency bins in turn, and find the minimum value. This is the basic spectral subtraction routine.
  	for (k=0;k<FFTLEN;k++)
 	{
-		p_fftbin.bin[k] = (((1 - k) * fftbin[k]) + (k * p_fftbin.bin[k])
+		p_fftbin.bin[k] = (((1 - k_filter) * fftbin[k]) + (k_filter * p_fftbin.bin[k]));
 
 		// Update the current 2.5s window minimum value if the current FFT sample is lower in amplitude than the one stored
-		if (p_fftbin[k] < min_window[winstage].bin[k])
-			min_window[winstage].bin[k] = p_fftbin[k];
+		if (p_fftbin.bin[k] < min_window[winstage].bin[k])
+			min_window[winstage].bin[k] = p_fftbin.bin[k];
 		
 		// We iterate through all 2.5s windows to find the minimum noise amongst them, and set it as the variable min_noise
 		for (i=0;i<WINDOWS;i++)
