@@ -58,10 +58,15 @@
 
 #define FRAMES_PER_WINDOW 312
 #define WINDOWS 4
-#define LAMBDA 0.1
-#define ALPHA 20
 #define TIME_CONST .002 // Ie 20ms
 float k_filter;
+
+int enable[10];
+float LAMBDA = 0.1;
+float ALPHA = 20;
+
+float max(float a, float b) { if (a > b) return a; return b; }
+float min(float a, float b) { if (a < b) return a; return b; }
 
 /******************************* Global declarations ********************************/
 
@@ -107,6 +112,8 @@ struct transform
 
 struct transform min_window[WINDOWS];
 struct transform p_fftbin;
+struct transform p_power_fftbin;
+struct transform p_min_noise;
 
  /******************************* Function prototypes *******************************/
 void init_hardware(void);    	/* Initialize codec */ 
@@ -145,12 +152,17 @@ void main()
   	/* initialize hardware interrupts */
   	init_HWI();    
   
-/* initialize algorithm constants */  
+/* initialize algorithm constants */
+
+	for (k=0;k<10;k++)
+	{
+		enable[k] = 0;
+	}
                        
   	for (k=0;k<FFTLEN;k++)
 	{                           
-	inwin[k] = sqrt((1.0-WINCONST*cos(PI*(2*k+1)/FFTLEN))/OVERSAMP);
-	outwin[k] = inwin[k]; 
+		inwin[k] = sqrt((1.0-WINCONST*cos(PI*(2*k+1)/FFTLEN))/OVERSAMP);
+		outwin[k] = inwin[k]; 
 	} 
   	ingain=INGAIN;
   	outgain=OUTGAIN;        
@@ -202,7 +214,6 @@ void process_frame(void)
 	int i, k, m; 
 	int io_ptr0;
 	struct transform g, min_noise;
-	float noise_val;
 
 	// We always use FLT_MAX because we are looking for the minimum value, so we start at the highest possible value as a default.
 	for(k=0;k<FFTLEN;k++) // Set g ready for use later on
@@ -254,11 +265,24 @@ void process_frame(void)
 	// Go through all frequency bins in turn, and find the minimum value. This is the basic spectral subtraction routine.
  	for (k=0;k<FFTLEN;k++)
 	{
+		// since we need P(x) at a later time anyway, let's keep it here.
 		p_fftbin.bin[k] = (((1 - k_filter) * fftbin[k]) + (k_filter * p_fftbin.bin[k]));
-
+		if (enable[1] == 1)
+		{
+			// set fftbin to p_fftbin
+			fftbin[k] = p_fftbin.bin[k];
+		} else if (enable[1] == 2)
+		{
+			// Update the value of the previous fftbin, so that we can keep this for later...
+			p_power_fftbin.bin[k] = sqrt(((1 - k_filter) * fftbin[k] * fftbin[k]) + (k_filter * p_power_fftbin.bin[k] * p_power_fftbin.bin[k]));
+			
+			// set fftbin to p_fftbin
+			fftbin[k] = p_power_fftbin.bin[k];
+		}
+		
 		// Update the current 2.5s window minimum value if the current FFT sample is lower in amplitude than the one stored
-		if (p_fftbin.bin[k] < min_window[winstage].bin[k])
-			min_window[winstage].bin[k] = p_fftbin.bin[k];
+		if (fftbin[k] < min_window[winstage].bin[k]) //ENH1
+			min_window[winstage].bin[k] = fftbin[k]; //ENH1
 		
 		// We iterate through all 2.5s windows to find the minimum noise amongst them, and set it as the variable min_noise
 		for (i=0;i<WINDOWS;i++)
@@ -266,27 +290,32 @@ void process_frame(void)
 			if (min_noise.bin[k] > min_window[i].bin[k])
 				min_noise.bin[k] = min_window[i].bin[k];
 		}
-
-		// Calculate the estimated noise: 1 - (mag(min noise) / mag(fft of current sample))
-		noise_val = 1 - ((ALPHA * min_noise.bin[k]) / fftbin[k]);
-		// if (noise_val > LAMBDA)
-		// 	g.bin[k] = noise_val;
-		// else
-		// 	g.bin[k] = LAMBDA
-
+		
+		if (enable[2] == 1)
+		{
+			// Update the value of the previous fftbin, so that we can keep this for later...
+			p_min_noise.bin[k] = (((1 - k_filter) * min_noise.bin[k]) + (k_filter * p_min_noise.bin[k]));
+			
+			// set min_noise to p_min_noise
+			min_noise.bin[k] = p_min_noise.bin[k];
+		}
+		
+		
 		// We either take the estimated noise, or if our LAMBDA value is bigger, we use that instead.
-		g.bin[k] = (noise_val > LAMBDA) ? noise_val : LAMBDA;
+		g.bin[k] = max (LAMBDA, 1 - ((ALPHA * min_noise.bin[k]) / fftbin[k]));
 	
 		// Multiply the complex FFT (X(w) with our value of G(w))
-		inframe_c[k] = rmul(g.bin[k], inframe_c[k]);
+		
+		if (enable[0] == 1)
+			inframe_c[k] = rmul(g.bin[k], inframe_c[k]);
 	}
 	
 	
-	// Now let's comapre the current values to the minimum ones (to calculate g)
-	// for(k=0;k<FFTLEN;k++)
-	// {
-	// 	g.bin[k] = 1 - 
-	// }
+	
+	
+	
+	
+	
 
 	// Move the frame position along one, and if at the end, reset and check if we need to use a different 2.5s window
 	if (frame_position < FRAMES_PER_WINDOW)
@@ -314,15 +343,6 @@ void process_frame(void)
 		outframe[k] = inframe_c[k].r;/* copy input straight into output */ 
 	} 
 
-	/* please add your code, at the moment the code simply copies the input to the 
-	ouptut with no processing */	 
-							      	
-//										
-//    for (k=0;k<FFTLEN;k++)
-//	{                           
-//		outframe[k] = inframe[k];/* copy input straight into output */ 
-//	} 
-	
 	/********************************************************************************/
 	
     /* multiply outframe by output window and overlap-add into output buffer */  
