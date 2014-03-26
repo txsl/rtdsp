@@ -64,6 +64,7 @@ float k_filter;
 int enable[10];
 float LAMBDA = 0.1;
 float ALPHA = 20;
+float alphamod[2][FFTLEN];
 
 float max(float a, float b) { if (a > b) return a; return b; }
 float min(float a, float b) { if (a < b) return a; return b; }
@@ -163,7 +164,23 @@ void main()
 	{                           
 		inwin[k] = sqrt((1.0-WINCONST*cos(PI*(2*k+1)/FFTLEN))/OVERSAMP);
 		outwin[k] = inwin[k]; 
-	} 
+		
+		// set up alphamodifiers
+		alphamod[0][k] = ALPHA;
+		
+		alphamod[1][k] = 0;
+		alphamod[2][k] = 0;
+		if (k/FFTLEN > 80/8000 && k/FFTLEN < 7200/8000) //if our k represents > 80Hz @ 8000Hz Sampling, then 1
+		{
+			alphamod[1][k] = ALPHA;
+			alphamod[2][k] = ALPHA;
+		}
+		if (k/FFTLEN > 3000/8000 && k/FFTLEN < 5000/8000)
+		{
+			alphamod[2][k] = 0;
+		}
+			
+	}
   	ingain=INGAIN;
   	outgain=OUTGAIN;        
 
@@ -301,43 +318,44 @@ void process_frame(void)
 		}
 		
 		
+		// this is messy and needs to be re-written
 		// We either take the estimated noise, or if our LAMBDA value is bigger, we use that instead.
 		if (enable[4] == 0)
 		{
 			switch (enable[3]) {
 				case 1:
-					g.bin[k] = max (LAMBDA * ((ALPHA * min_noise.bin[k]) / fftbin[k]), 1 - ((ALPHA * min_noise.bin[k]) / fftbin[k]));
+					g.bin[k] = max (LAMBDA * ((alphamod[enable[5]][k] * min_noise.bin[k]) / fftbin[k]), 1 - ((alphamod[enable[5]][k] * min_noise.bin[k]) / fftbin[k]));
 					break;
 				case 2:
-					g.bin[k] = max (LAMBDA * p_fftbin.bin[k]/fftbin[k], 1 - ((ALPHA * min_noise.bin[k]) / fftbin[k]));
+					g.bin[k] = max (LAMBDA * p_fftbin.bin[k]/fftbin[k], 1 - ((alphamod[enable[5]][k] * min_noise.bin[k]) / fftbin[k]));
 					break;
 				case 3:
-					g.bin[k] = max (LAMBDA*(ALPHA * min_noise.bin[k])/p_fftbin.bin[k] , 1 - ((ALPHA * min_noise.bin[k]) / p_fftbin.bin[k]));
+					g.bin[k] = max (LAMBDA*(alphamod[enable[5]][k] * min_noise.bin[k])/p_fftbin.bin[k] , 1 - ((alphamod[enable[5]][k] * min_noise.bin[k]) / p_fftbin.bin[k]));
 					break;
 				case 4:
-					g.bin[k] = max (LAMBDA, 1 - ((ALPHA * min_noise.bin[k]) / p_fftbin.bin[k]));
+					g.bin[k] = max (LAMBDA, 1 - ((alphamod[enable[5]][k] * min_noise.bin[k]) / p_fftbin.bin[k]));
 					break;
 				default: 
-					g.bin[k] = max (LAMBDA, 1 - ((ALPHA * min_noise.bin[k]) / fftbin[k]));	
+					g.bin[k] = max (LAMBDA, 1 - ((alphamod[enable[5]][k] * min_noise.bin[k]) / fftbin[k]));	
 			}
 		}
 		else if (enable[4] == 1)
 		{
 			switch (enable[3]) {
 				case 1:
-					g.bin[k] = max (LAMBDA * ((ALPHA * min_noise.bin[k]) / fftbin[k]), 1 - ((ALPHA * min_noise.bin[k]) / fftbin[k]));
+					g.bin[k] = max (LAMBDA * ((alphamod[enable[5]][k] * min_noise.bin[k]) / fftbin[k]), 1 - ((alphamod[enable[5]][k] * min_noise.bin[k]) / fftbin[k]));
 					break;
 				case 2:
-					g.bin[k] = max (LAMBDA * p_fftbin.bin[k]/fftbin[k], sqrt(1 - ((ALPHA * min_noise.bin[k] * ALPHA * min_noise.bin[k]) / (fftbin[k]* fftbin[k]))));
+					g.bin[k] = max (LAMBDA * p_fftbin.bin[k]/fftbin[k], sqrt(1 - ((alphamod[enable[5]][k] * min_noise.bin[k] * alphamod[enable[5]][k] * min_noise.bin[k]) / (fftbin[k]* fftbin[k]))));
 					break;
 				case 3:
-					g.bin[k] = max (LAMBDA*(ALPHA * min_noise.bin[k])/p_fftbin.bin[k] , sqrt(1 - ((ALPHA * min_noise.bin[k] * ALPHA * min_noise.bin[k]) / (p_fftbin.bin[k]*p_fftbin.bin[k]))));
+					g.bin[k] = max (LAMBDA*(alphamod[enable[5]][k] * min_noise.bin[k])/p_fftbin.bin[k] , sqrt(1 - ((alphamod[enable[5]][k] * min_noise.bin[k] * alphamod[enable[5]][k] * min_noise.bin[k]) / (p_fftbin.bin[k]*p_fftbin.bin[k]))));
 					break;
 				case 4:
-					g.bin[k] = max (LAMBDA, sqrt(1 - ((ALPHA * min_noise.bin[k] * ALPHA * min_noise.bin[k]) / (p_fftbin.bin[k]*p_fftbin.bin[k]))));
+					g.bin[k] = max (LAMBDA, sqrt(1 - ((alphamod[enable[5]][k] * min_noise.bin[k] * alphamod[enable[5]][k] * min_noise.bin[k]) / (p_fftbin.bin[k]*p_fftbin.bin[k]))));
 					break;
 				default: 
-					g.bin[k] = max (LAMBDA, sqrt(1 - (ALPHA*min_noise.bin[k]*ALPHA*min_noise.bin[k] / (fftbin[k]*fftbin[k]))) );	
+					g.bin[k] = max (LAMBDA, sqrt(1 - (alphamod[enable[5]][k]*min_noise.bin[k]*alphamod[enable[5]][k]*min_noise.bin[k] / (fftbin[k]*fftbin[k]))) );	
 			}
 		}
 		
