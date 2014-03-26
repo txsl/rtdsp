@@ -168,8 +168,8 @@ void main()
 		// set up alphamodifiers
 		alphamod[0][k] = ALPHA;
 		
-		alphamod[1][k] = 0;
-		alphamod[2][k] = 0;
+		alphamod[1][k] = ALPHA*2;
+		alphamod[2][k] = ALPHA*2;
 		if (k/FFTLEN > 80/8000 && k/FFTLEN < 7200/8000) //if our k represents > 80Hz @ 8000Hz Sampling, then 1
 		{
 			alphamod[1][k] = ALPHA;
@@ -177,7 +177,7 @@ void main()
 		}
 		if (k/FFTLEN > 3000/8000 && k/FFTLEN < 5000/8000)
 		{
-			alphamod[2][k] = 0;
+			alphamod[2][k] = ALPHA*2;
 		}
 			
 	}
