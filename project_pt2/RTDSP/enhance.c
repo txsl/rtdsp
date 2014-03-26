@@ -302,7 +302,23 @@ void process_frame(void)
 		
 		
 		// We either take the estimated noise, or if our LAMBDA value is bigger, we use that instead.
-		g.bin[k] = max (LAMBDA, 1 - ((ALPHA * min_noise.bin[k]) / fftbin[k]));
+		switch (enable[3]) {
+			case 1:
+				g.bin[k] = max (LAMBDA * ((ALPHA * min_noise.bin[k]) / fftbin[k]), 1 - ((ALPHA * min_noise.bin[k]) / fftbin[k]));
+				break;
+			case 2:
+				g.bin[k] = max (LAMBDA * p_fftbin.bin[k]/fftbin[k], 1 - ((ALPHA * min_noise.bin[k]) / fftbin[k]));
+				break;
+			case 3:
+				g.bin[k] = max (LAMBDA*(ALPHA * min_noise.bin[k])/p_fftbin.bin[k] , 1 - ((ALPHA * min_noise.bin[k]) / p_fftbin.bin[k]));
+				break;
+			case 4:
+				g.bin[k] = max (LAMBDA, 1 - ((ALPHA * min_noise.bin[k]) / p_fftbin.bin[k]));
+				break;
+			default: 
+				g.bin[k] = max (LAMBDA, 1 - ((ALPHA * min_noise.bin[k]) / fftbin[k]));	
+		}
+		
 	
 		// Multiply the complex FFT (X(w) with our value of G(w))
 		
