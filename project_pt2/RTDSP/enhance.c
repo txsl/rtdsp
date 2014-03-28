@@ -64,10 +64,15 @@ float k_filter;
 int enable[10];
 float LAMBDA = 0.1;
 float ALPHA = 20;
+float previousSNR[FFTLEN];
+float residual = 0.5;
 float alphamod[2][FFTLEN];
+
+int alpha_lowfreq = 80;
 
 float max(float a, float b) { if (a > b) return a; return b; }
 float min(float a, float b) { if (a < b) return a; return b; }
+complex minC(complex a, complex b) { if (cabs(a) < cabs(b)) return a; return b; }
 
 /******************************* Global declarations ********************************/
 
@@ -102,6 +107,8 @@ volatile int io_ptr=0;              /* Input/ouput pointer for circular buffers 
 volatile int frame_ptr=0;           /* Frame pointer */
 
 complex *inframe_c;
+complex *inframe_right_c;
+complex *inframe_right2_c;
 float *fftbin;
 int winstage = 0;
 int frame_position = 0;
@@ -124,7 +131,7 @@ void process_frame(void);       /* Frame processing routine */
            
 /********************************** Main routine ************************************/
 void main()
-{      
+{
 
   	int k; // used in various for loops
   	int i; // also used as a counter
@@ -141,6 +148,8 @@ void main()
     outwin		= (float *) calloc(FFTLEN, sizeof(float));	/* Output window */
     
     inframe_c = (complex *) calloc(FFTLEN, sizeof(complex));
+    inframe_right_c = (complex *) calloc(FFTLEN, sizeof(complex));
+    inframe_right2_c = (complex *) calloc(FFTLEN, sizeof(complex));
 	fftbin = (float *) calloc(FFTLEN, sizeof(float));
 	
 	for(i=0;i<WINDOWS;i++)	
@@ -163,23 +172,12 @@ void main()
   	for (k=0;k<FFTLEN;k++)
 	{                           
 		inwin[k] = sqrt((1.0-WINCONST*cos(PI*(2*k+1)/FFTLEN))/OVERSAMP);
-		outwin[k] = inwin[k]; 
+		outwin[k] = inwin[k];
 		
-		// set up alphamodifiers
-		alphamod[0][k] = ALPHA;
+		p_min_noise.bin[k] = FLT_MAX;
 		
-		alphamod[1][k] = ALPHA*2;
-		alphamod[2][k] = ALPHA*2;
-		if (k/FFTLEN > 80/8000 && k/FFTLEN < 7200/8000) //if our k represents > 80Hz @ 8000Hz Sampling, then 1
-		{
-			alphamod[1][k] = ALPHA;
-			alphamod[2][k] = ALPHA;
-		}
-		if (k/FFTLEN > 3000/8000 && k/FFTLEN < 5000/8000)
-		{
-			alphamod[2][k] = ALPHA*2;
-		}
-			
+		previousSNR[k] = 0;
+		
 	}
   	ingain=INGAIN;
   	outgain=OUTGAIN;        
@@ -237,7 +235,19 @@ void process_frame(void)
 	{
 		g.bin[k] = FLT_MAX;
 		min_noise.bin[k] = FLT_MAX;
+		
+		// set up alphamodifiers
+		alphamod[0][k] = ALPHA;
+		
+		alphamod[1][k] = ALPHA*2;
+		alphamod[2][k] = ALPHA*2;
+		if (k/FFTLEN > alpha_lowfreq/8000 && k/FFTLEN < (8000-alpha_lowfreq)/8000) //if our k represents > 80Hz @ 8000Hz Sampling, then 1
+		{
+			alphamod[1][k] = ALPHA;
+			alphamod[2][k] = ALPHA;
+		}
 	}
+		
 
 	/* work out fraction of available CPU time used by algorithm */    
 	cpufrac = ((float) (io_ptr & (FRAMEINC - 1)))/FRAMEINC;  
@@ -359,12 +369,24 @@ void process_frame(void)
 			}
 		}
 		
-		
-	
+
 		// Multiply the complex FFT (X(w) with our value of G(w))
-		
 		if (enable[0] == 1)
 			inframe_c[k] = rmul(g.bin[k], inframe_c[k]);
+			
+			
+		// Residual noise theorem
+		if (enable[6] == 1)
+		{
+			if (  previousSNR[k] > residual  )
+			{
+				inframe_right_c[k] = minC(minC(inframe_c[k], inframe_right_c[k]), inframe_right2_c[k]);
+			}
+			previousSNR[k] = alphamod[enable[5]][k]*min_noise.bin[k] / fftbin[k];
+		}
+		
+	
+
 	}
 	
 	
@@ -393,12 +415,17 @@ void process_frame(void)
 		}
 	}
 	
-	ifft(FFTLEN, inframe_c);
-									
+	// IFFT the last frame, so that we can then put this to output
+	ifft(FFTLEN, inframe_right2_c);						
     for (k=0;k<FFTLEN;k++)
 	{                           
-		outframe[k] = inframe_c[k].r;/* copy input straight into output */ 
+		outframe[k] = inframe_right2_c[k].r;/* copy input straight into output */ 
+		
+		// once we clear the inframe_right2_c, let's shift along
+		inframe_right2_c[k] = inframe_right_c[k];
+		inframe_right_c[k] = inframe_c[k];
 	} 
+	
 
 	/********************************************************************************/
 	
