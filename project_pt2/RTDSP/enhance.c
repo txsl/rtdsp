@@ -62,13 +62,13 @@
 float k_filter;
 
 int enable[10];
-float LAMBDA = 0.1;
-float ALPHA = 20;
+float LAMBDA = 0.05;
+float ALPHA = 7;
 float previousSNR[FFTLEN];
 float residual = 0.5;
 float alphamod[2][FFTLEN];
 
-int alpha_lowfreq = 80;
+int alpha_lowfreq = 500;
 
 float max(float a, float b) { if (a > b) return a; return b; }
 float min(float a, float b) { if (a < b) return a; return b; }
@@ -136,7 +136,8 @@ void main()
   	int k; // used in various for loops
   	int i; // also used as a counter
   	
-  	k_filter = exp(-TFRAME/TIME_CONST);
+  	//k_filter = exp(-TFRAME/TIME_CONST);
+  	k_filter = 0.2;
   
 /*  Initialize and zero fill arrays */  
 
@@ -168,6 +169,12 @@ void main()
 	{
 		enable[k] = 0;
 	}
+	enable[0] = 1;
+	enable[1] = 2;
+	enable[2] = 1;
+	enable[3] = 3;
+	enable[5] = 1;
+	
                        
   	for (k=0;k<FFTLEN;k++)
 	{                           
