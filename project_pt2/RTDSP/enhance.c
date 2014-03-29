@@ -56,7 +56,7 @@
 #define PI 3.141592653589793
 #define TFRAME FRAMEINC/FSAMP       /* time between calculation of each frame */
 
-#define FRAMES_PER_WINDOW 312
+#define FRAMES_PER_WINDOW 156
 #define WINDOWS 4
 #define TIME_CONST .002 // Ie 20ms
 float k_filter;
@@ -237,18 +237,18 @@ void process_frame(void)
 	int io_ptr0;
 	struct transform g, min_noise;
 
-	// We always use FLT_MAX because we are looking for the minimum value, so we start at the highest possible value as a default.
+	// We always use FLT_MAX because we are looking for the minimum value, so we start at the highest possible value as a default. FLT_MAX is part of the C float library.
 	for(k=0;k<FFTLEN;k++) // Set g ready for use later on
 	{
 		g.bin[k] = FLT_MAX;
 		min_noise.bin[k] = FLT_MAX;
 		
-		// set up alphamodifiers
+		// set up alphamodifiers. So we can choose to use different alpha values for different frequency bins.
 		alphamod[0][k] = ALPHA;
 		
 		alphamod[1][k] = ALPHA*2;
 		alphamod[2][k] = ALPHA*2;
-		if (k/FFTLEN > alpha_lowfreq/8000 && k/FFTLEN < (8000-alpha_lowfreq)/8000) //if our k represents > 80Hz @ 8000Hz Sampling, then 1
+		if (k/FFTLEN > alpha_lowfreq/8000 && k/FFTLEN < (8000-alpha_lowfreq)/8000) //if our k represents > 80Hz @ 8000Hz Sampling, then we revert back to the original ALPHA value (ie not double what is specified)
 		{
 			alphamod[1][k] = ALPHA;
 			alphamod[2][k] = ALPHA;
@@ -335,8 +335,8 @@ void process_frame(void)
 		}
 		
 		
-		// this is messy and needs to be re-written
 		// We either take the estimated noise, or if our LAMBDA value is bigger, we use that instead.
+		// We process the FFT differently depending on which switches have been chosen 
 		if (enable[4] == 0)
 		{
 			switch (enable[3]) {
