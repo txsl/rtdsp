@@ -2,7 +2,7 @@
 frame.obj: ../frame.c
 frame.obj: C:/EEE/CCStudio4.1/ccsv4/tools/compiler/c6000/include/stdlib.h
 frame.obj: C:/EEE/CCStudio4.1/ccsv4/tools/compiler/c6000/include/linkage.h
-frame.obj: L:/rt-dsp/project_pt1/RTDSP/Debug/dsp_bios_cfg.h
+frame.obj: L:/RTDSPlab/project_pt1/RTDSP/Debug/dsp_bios_cfg.h
 frame.obj: C:/EEE/CCStudio4.1/bios_5_41_02_14/packages/ti/bios/include/std.h
 frame.obj: C:/EEE/CCStudio4.1/bios_5_41_02_14/packages/ti/bios/include/tistdtypes.h
 frame.obj: C:/EEE/CCStudio4.1/bios_5_41_02_14/packages/ti/bios/include/hst.h
